@@ -17,6 +17,15 @@ namespace TechroseDemo
         {
             UserModelLoginResult result = new();
 
+            if (args.SecurityTokenKey != Constants.tConstant_SecurityTokenKey)
+            {
+                result.Result.Success = false;
+                result.Result.ErrorCode = EnumErrorCodes.ERRORx0001.ToString();
+                result.Result.ErrorDescription = EnumErrorCodes.ERRORx0001.ToDescription();
+
+                return result;
+            }
+
             await Task.Run(() =>
             {
                 try
@@ -43,6 +52,15 @@ namespace TechroseDemo
         public async Task<UserModelCreateResult> UserCreate([FromBody] UserModelCreateArgs args)
         {
             UserModelCreateResult result = new();
+
+            if (args.SecurityTokenKey != Constants.tConstant_SecurityTokenKey)
+            {
+                result.Result.Success = false;
+                result.Result.ErrorCode = EnumErrorCodes.ERRORx0001.ToString();
+                result.Result.ErrorDescription = EnumErrorCodes.ERRORx0001.ToDescription();
+
+                return result;
+            }
 
             await Task.Run(() =>
             {
