@@ -14,6 +14,15 @@ namespace TechroseDemo
             #region UserOperationsErrorEnums
             [Description("Invalid Credentials")]
             ERRORx0100,
+
+            [Description("Already User Exist")]
+            ERRORx0404,
+
+            [Description("User Not Found!")]
+            ERRORx0401,
+
+            [Description("Incorrect Password!")]
+            ERRORx0400,
             #endregion
         }
     }

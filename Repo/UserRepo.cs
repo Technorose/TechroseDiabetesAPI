@@ -1,5 +1,9 @@
 ﻿using TechroseDemo.Repo;
 using static TechroseDemo.Enums;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using Microsoft.IdentityModel.Tokens;
+using System;
 
 namespace TechroseDemo
 {
@@ -10,6 +14,84 @@ namespace TechroseDemo
         {
             UserModelLoginResult result = new();
 
+            #region ControlsOfCredentials
+            if (args.UserName.Equals(null) || args.UserName.Trim().Equals(""))
+            {
+                result.Result.Success = false;
+                result.Result.ErrorCode = EnumErrorCodes.ERRORx0100.ToString();
+                result.Result.ErrorDescription = EnumErrorCodes.ERRORx0100.ToString();
+
+                return result;
+            }
+
+            if (args.Password.Equals(null) || args.Password.Trim().Equals(""))
+            {
+                result.Result.Success = false;
+                result.Result.ErrorCode = EnumErrorCodes.ERRORx0100.ToString();
+                result.Result.ErrorDescription = EnumErrorCodes.ERRORx0100.ToString();
+
+                return result;
+            }
+            #endregion
+
+            #region ControlDatabaseForUser
+            UserModel? userResult = DatabaseContext.Users.SingleOrDefault(
+                u => u.Email == args.UserName || u.PhoneNumber == args.UserName    
+            );
+
+            if (userResult == null)
+            {
+                result.Result.Success = false;
+                result.Result.ErrorCode = EnumErrorCodes.ERRORx0401.ToString();
+                result.Result.ErrorDescription = EnumErrorCodes.ERRORx0401.ToDescription();
+
+                return result;
+            }
+            #endregion
+
+            #region PasswordChecking
+            bool passwordCheck = PasswordHashing.PasswordHashCheck(new PasswordHashModel() { HashedPassword = userResult.HashedPassword, PasswordToHash = args.Password });
+
+            if (!passwordCheck)
+            {
+                result.Result.Success = false;
+                result.Result.ErrorCode = EnumErrorCodes.ERRORx0400.ToString();
+                result.Result.ErrorDescription = EnumErrorCodes.ERRORx0400.ToDescription();
+
+                return result;
+            }
+            #endregion
+
+            #region Token
+            SymmetricSecurityKey securityKey = new SymmetricSecurityKey(System.Text.Encoding.UTF8.GetBytes(Constants.tConstant_SecretKey));
+            SigningCredentials credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
+
+            Claim[] claims = new[]
+            {
+                new Claim(ClaimTypes.Name, string.Concat(userResult.FirstName, userResult.LastName)),
+                new Claim(ClaimTypes.Email, userResult.Email)
+            };
+
+            JwtSecurityToken token = new JwtSecurityToken(
+                issuer: "",
+                audience: "",
+                claims: claims,
+                expires: DateTime.UtcNow.AddHours(24),
+                signingCredentials: credentials
+            );
+
+            string tokenString = new JwtSecurityTokenHandler().WriteToken(token);
+            #endregion
+
+            #region PreparingResponse
+            result.FullName = string.Concat(userResult.FirstName, userResult.LastName);
+            result.Id = userResult.Id;
+            result.Token = tokenString;
+            result.Result.Success = true;
+            result.Result.ErrorCode = "";
+            result.Result.ErrorDescription = "";
+            #endregion
+
             return result;
         }
         #endregion
@@ -19,6 +101,7 @@ namespace TechroseDemo
         {
             UserModelCreateResult result = new();
 
+            #region ControlsOfCredentials
             if (args.FirstName.Equals(null) || args.FirstName.Trim().Equals(""))
             {
                 result.Result.Success = false;
@@ -63,6 +146,56 @@ namespace TechroseDemo
 
                 return result;
             }
+
+            if (args.BirthDate.Equals(null))
+            {
+                result.Result.Success = false;
+                result.Result.ErrorCode = EnumErrorCodes.ERRORx0100.ToString();
+                result.Result.ErrorDescription = EnumErrorCodes.ERRORx0100.ToDescription();
+
+                return result;
+            }
+            #endregion
+
+            #region ControlDatabaseForUserExist
+            UserModel? userResult = DatabaseContext.Users.SingleOrDefault(
+                u => u.Email == args.Email || u.PhoneNumber == args.PhoneNumber
+            );
+
+            if (userResult != null)
+            {
+                result.Result.Success = false;
+                result.Result.ErrorCode = EnumErrorCodes.ERRORx0404.ToString();
+                result.Result.ErrorDescription = EnumErrorCodes.ERRORx0404.ToDescription();
+
+                return result;
+            }
+            #endregion
+
+            #region PasswordHashing
+            PasswordHashModel hashedPassword = PasswordHashing.PasswordHash(args.Password);
+            #endregion
+
+            #region NewUserCreated
+            UserModel user = new()
+            {
+                FirstName = args.FirstName,
+                LastName = args.LastName,
+                BirthDate = args.BirthDate,
+                HashedPassword = hashedPassword.HashedPassword,
+                Email = args.Email,
+                PhoneNumber = args.PhoneNumber
+            };
+            #endregion
+
+            #region AddUserToDatabase
+            DatabaseContext.Users.Add(user);
+            DatabaseContext.SaveChanges();
+            #endregion
+
+            result.Result.Success = true;
+            result.Result.ErrorCode = "";
+            result.Result.ErrorDescription = "";
 
             return result;
         }

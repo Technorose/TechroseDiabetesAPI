@@ -17,6 +17,15 @@ namespace TechroseDemo
         {
             UserModelLoginResult result = new();
 
+            if (args.SecurityTokenKey != Constants.tConstant_SecurityTokenKey)
+            {
+                result.Result.Success = false;
+                result.Result.ErrorCode = EnumErrorCodes.ERRORx0001.ToString();
+                result.Result.ErrorDescription = EnumErrorCodes.ERRORx0001.ToDescription();
+
+                return result;
+            }
+
             await Task.Run(() =>
             {
                 try
@@ -44,6 +53,15 @@ namespace TechroseDemo
         {
             UserModelCreateResult result = new();
 
+            if (args.SecurityTokenKey != Constants.tConstant_SecurityTokenKey)
+            {
+                result.Result.Success = false;
+                result.Result.ErrorCode = EnumErrorCodes.ERRORx0001.ToString();
+                result.Result.ErrorDescription = EnumErrorCodes.ERRORx0001.ToDescription();
+
+                return result;
+            }
+
             await Task.Run(() =>
             {
                 try
@@ -51,6 +69,37 @@ namespace TechroseDemo
                     result = repoInterface.UserCreate(args);
                 }
 
+                catch (Exception ex)
+                {
+                    result.Result.Success = false;
+                    result.Result.ErrorCode = EnumErrorCodes.ERRORx0001.ToString();
+                    result.Result.ErrorDescription = EnumErrorCodes.ERRORx0001.ToDescription();
+                    result.Result.ErrorException = Common.ExceptionToString(ex);
+                }
+            });
+
+            return result;
+        }
+        #endregion
+
+        #region TokenCheck
+        [Authorize]
+        [Route(nameof(TokenCheck))]
+        [HttpPost]
+        public async Task<TokenCheckModelResult> TokenCheck([FromBody] TokenCheckModelArgs args)
+        {
+            TokenCheckModelResult result = new();
+
+            await Task.Run(() =>
+            {
+                try
+                {
+                    result.ClientTime = args.ClientTime;
+                    result.ServerTime = DateTime.UtcNow;
+                    result.Result.Success = true;
+                    result.Result.ErrorCode = "";
+                    result.Result.ErrorDescription = "";
+                }
                 catch (Exception ex)
                 {
                     result.Result.Success = false;

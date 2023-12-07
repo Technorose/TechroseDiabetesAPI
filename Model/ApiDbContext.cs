@@ -1,4 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Npgsql;
+using Npgsql.NameTranslation;
 
 namespace TechroseDemo
 {
@@ -13,7 +15,9 @@ namespace TechroseDemo
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseNpgsql(Configuration.GetConnectionString("DefaultConnection"));
+            optionsBuilder.UseNpgsql(Configuration.GetConnectionString("DefaultConnection"))
+                .ReplaceService<INpgsqlNameTranslator, NpgsqlSnakeCaseNameTranslator>()
+                .EnableSensitiveDataLogging();
         }
 
         public DbSet<UserModel> Users { get; set; }
