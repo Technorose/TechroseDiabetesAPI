@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 using System.Numerics;
+using System.Text.Json.Serialization;
 
 namespace TechroseDemo
 {
@@ -67,13 +68,42 @@ namespace TechroseDemo
     {
         public NutritionModelListResult()
         {
-            Nutritions = default(List<NutritionModel>);
+            Nutritions = new List<NutritionModel>();
             Result = new ResultModel();
         }
 
         public ResultModel Result { get; set; }
 
-        public List<NutritionModel>? Nutritions { get; set; }
+        public List<NutritionModel> Nutritions { get; set; }
 
+    }
+
+    public class NutritionModelSearchArgs
+    {
+        public NutritionModelSearchArgs()
+        {
+            SearchArgument = string.Empty;
+            Limit = int.MinValue;
+            Offset = int.MinValue;
+        }
+
+        public string SearchArgument { get; set; }
+
+        public int Limit { get; set;}
+
+        public int Offset { get; set;}
+    }
+
+    public class NutritionModelSearchResult
+    {
+        public NutritionModelSearchResult()
+        {
+            Nutritions = new List<NutritionModel>();
+            Result = new ResultModel();
+        }
+
+        public List<NutritionModel> Nutritions { get; set; }
+
+        public ResultModel Result { get; set; }
     }
 }

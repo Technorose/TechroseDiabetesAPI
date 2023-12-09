@@ -50,5 +50,61 @@ namespace TechroseDemo
             return result;
         }
         #endregion
+
+        #region NutritionSearch
+        public NutritionModelSearchResult NutritionSearch(NutritionModelSearchArgs args)
+        {
+            NutritionModelSearchResult result = new();
+
+            #region CheckCredentials
+            if (args.SearchArgument.Equals(null) || args.SearchArgument.Trim().Equals(""))
+            {
+                result.Result.Success = false;
+                result.Result.ErrorCode = EnumErrorCodes.ERRORx0601.ToString();
+                result.Result.ErrorDescription = EnumErrorCodes.ERRORx0601.ToDescription();
+
+                return result;
+            }
+
+            if (args.Limit.Equals(int.MinValue))
+            {
+                args.Limit = 10;
+            }
+
+            if (args.Offset.Equals(int.MinValue))
+            {
+                args.Offset = 0;
+            }
+            #endregion
+
+            #region SearchingOnTable
+            IQueryable<NutritionModel> query = DatabaseContext.Nutritions
+                .OrderBy(n => n.Id)
+                .Where(n => n.Name.Contains(args.SearchArgument))
+                .Skip(args.Offset)
+                .Take(args.Limit);
+            #endregion
+
+            #region CheckQuery
+            if (query.Equals(null))
+            {
+                result.Result.Success = false;
+                result.Result.ErrorCode = EnumErrorCodes.ERRORx0601.ToString();
+                result.Result.ErrorDescription = EnumErrorCodes.ERRORx0601.ToDescription();
+
+                return result;
+            }
+            #endregion
+
+            #region PreparingResponse
+            result.Nutritions = [.. query];
+            result.Result.Success = true;
+            result.Result.ErrorCode = "";
+            result.Result.ErrorDescription = "";
+            #endregion
+
+            return result;
+        }
+        #endregion
     }
 }

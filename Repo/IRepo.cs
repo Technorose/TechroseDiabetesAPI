@@ -10,6 +10,8 @@
 
         #region NutritionRepo
         NutritionModelListResult NutritionsList(NutritionModelListArgs args);
+
+        NutritionModelSearchResult NutritionSearch(NutritionModelSearchArgs args);
         #endregion
     }
 }

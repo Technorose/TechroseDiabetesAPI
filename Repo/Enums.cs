@@ -27,7 +27,10 @@ namespace TechroseDemo
 
             #region NutritionsOperationsErrorEnums
             [Description("Error Occurred While Getting Nutritions List!")]
-            ERRORx0600
+            ERRORx0600,
+
+            [Description("Error Occurred While Searching Nutritions!")]
+            ERRORx0601,
             #endregion
         }
     }
