@@ -35,7 +35,7 @@ namespace TechroseDemo
         }
 
         #region NutritionSearchAPI
-        [AllowAnonymous]
+        [Authorize]
         [Route(nameof(NutritionSearch))]
         [HttpGet]
         public async Task<NutritionModelSearchResult> NutritionSearch([FromQuery] NutritionModelSearchArgs args)
