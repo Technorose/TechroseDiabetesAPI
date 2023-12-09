@@ -24,6 +24,11 @@ namespace TechroseDemo
             [Description("Incorrect Password!")]
             ERRORx0400,
             #endregion
+
+            #region NutritionsOperationsErrorEnums
+            [Description("Error Occurred While Getting Nutritions List!")]
+            ERRORx0600
+            #endregion
         }
     }
 }
