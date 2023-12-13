@@ -6,6 +6,8 @@
         UserModelLoginResult UserLogin(UserModelLoginArgs args);
 
         UserModelCreateResult UserCreate(UserModelCreateArgs args);
+
+        UserModelDeleteResult UserDelete(UserModelDeleteArgs args);
         #endregion
 
         #region NutritionRepo

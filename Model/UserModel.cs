@@ -1,5 +1,6 @@
 ﻿using Microsoft.IdentityModel.Tokens;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Text.Json.Serialization;
 
 namespace TechroseDemo
@@ -15,17 +16,23 @@ namespace TechroseDemo
             BirthDate = default(DateTime);
         }
 
+        [Column("first_name")]
         public required string FirstName { get; set; }
 
+        [Column("last_name")]
         public required string LastName { get; set; }
 
+        [Column("email")]
         public required string Email { get; set; }
 
+        [Column("phone_number")]
         public required string PhoneNumber { get; set; }
 
+        [Column("birth_date")]
         public required DateTime BirthDate { get; set;}
     }
 
+    [Table("users")]
     public class UserModel : UserBaseModel
     {
         public UserModel()
@@ -34,10 +41,32 @@ namespace TechroseDemo
             HashedPassword = string.Empty;
         }
 
-        [Key]
+        [Column("id")]
         public string Id { get; set; }
 
+        [Column("hashed_password")]
         public string HashedPassword { get; set; }
+    }
+
+    public class UserModelDeleteArgs
+    {
+        public UserModelDeleteArgs()
+        {
+            Id = string.Empty;
+        }
+
+        [JsonPropertyName("id")]
+        public string Id { get; set; }
+    }
+
+    public class UserModelDeleteResult
+    {
+        public UserModelDeleteResult()
+        {
+            Result = new ResultModel();
+        }
+
+        public ResultModel Result { get; set; }
     }
 
     public class UserModelCreateArgs : UserBaseModel

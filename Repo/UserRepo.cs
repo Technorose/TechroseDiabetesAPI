@@ -199,6 +199,50 @@ namespace TechroseDemo
 
             return result;
         }
+
+        #region UserDelete
+        public UserModelDeleteResult UserDelete(UserModelDeleteArgs args)
+        {
+            UserModelDeleteResult result = new();
+
+            #region CheckCredential
+            if (args.Id.Equals(null) || args.Id.Trim().Equals(""))
+            {
+                result.Result.Success = false;
+                result.Result.ErrorCode = EnumErrorCodes.ERRORx0100.ToString();
+                result.Result.ErrorDescription = EnumErrorCodes.ERRORx0100.ToDescription();
+
+                return result;
+            }
+            #endregion
+
+            #region FindUserByUserId
+            UserModel? userResult = DatabaseContext.Users.SingleOrDefault(
+                u => u.Id == args.Id    
+            );
+
+            if (userResult == null)
+            {
+                result.Result.Success = false;
+                result.Result.ErrorCode = EnumErrorCodes.ERRORx0401.ToString();
+                result.Result.ErrorDescription = EnumErrorCodes.ERRORx0401.ToDescription();
+
+                return result;
+            }
+            #endregion
+
+            #region RemoveFromDatabase
+            DatabaseContext.Users.Remove(userResult);
+            DatabaseContext.SaveChanges();
+            #endregion
+
+            result.Result.Success = true;
+            result.Result.ErrorCode = "";
+            result.Result.ErrorDescription = "";
+
+            return result;
+        }
+        #endregion
         #endregion
     }
 }
