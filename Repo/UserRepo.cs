@@ -74,8 +74,8 @@ namespace TechroseDemo
             };
 
             JwtSecurityToken token = new JwtSecurityToken(
-                issuer: "*azurewebsites.com",
-                audience: "*azurewebsites.com",
+                issuer: "*azurewebsites.net",
+                audience: "*azurewebsites.net",
                 claims: claims,
                 expires: DateTime.UtcNow.AddHours(24),
                 signingCredentials: credentials
