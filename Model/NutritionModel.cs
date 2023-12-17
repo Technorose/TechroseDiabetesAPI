@@ -63,6 +63,7 @@ namespace TechroseDemo
         [Column("id")]
         public int Id { get; set; }
 
+        [JsonIgnore]
         public virtual ICollection<UserNutritionModel>? UserNutritionModels { get; set; }
     }
 

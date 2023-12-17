@@ -15,5 +15,9 @@
 
         NutritionModelSearchResult NutritionSearch(NutritionModelSearchArgs args);
         #endregion
+
+        #region UserNutritionRepo
+        UserNutritionModelCreateResult UserNutritionCreate(UserNutritionModelCreateArgs args);
+        #endregion
     }
 }

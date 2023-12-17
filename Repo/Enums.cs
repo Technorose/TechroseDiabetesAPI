@@ -32,6 +32,14 @@ namespace TechroseDemo
             [Description("Error Occurred While Searching Nutritions!")]
             ERRORx0601,
             #endregion
+
+            #region UserNutritionOperationsErrorEnums
+            [Description("The User must be valid!")]
+            ERRORx0900,
+
+            [Description("The Nutrition must be valid!")]
+            ERRORx0901,
+            #endregion
         }
     }
 }

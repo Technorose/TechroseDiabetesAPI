@@ -4,9 +4,9 @@ using System.Text.Json.Serialization;
 
 namespace TechroseDemo
 {
-    public class UserBaseNutritionModel
+    public class UserNutritionBaseModel
     {
-        public UserBaseNutritionModel()
+        public UserNutritionBaseModel()
         {
             UserId = int.MinValue;
             NutritionId = int.MinValue;
@@ -18,12 +18,16 @@ namespace TechroseDemo
         [Column("user_id")]
         [ForeignKey("UserModel")]
         public required int UserId { get; set; }
+
+        [JsonIgnore]
         public virtual UserModel? UserModel { get; set; }
 
         [JsonPropertyName("nutrition_id")]
         [Column("nutrition_id")]
         [ForeignKey("NutritionModel")]
         public required int NutritionId { get; set; }
+
+        [JsonIgnore]
         public virtual NutritionModel? NutritionModel { get; set; }
 
         [JsonPropertyName("portion")]
@@ -36,7 +40,7 @@ namespace TechroseDemo
     }
 
     [Table("user_nutritions")]
-    public class UserNutritionModel : UserBaseNutritionModel
+    public class UserNutritionModel : UserNutritionBaseModel
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
@@ -45,6 +49,22 @@ namespace TechroseDemo
     }
 
     #region UserNutritionCreateModels
+    public class UserNutritionModelCreateArgs : UserNutritionBaseModel
+    {
+        public UserNutritionModelCreateArgs() 
+        {
+             
+        }
+    }
 
+    public class UserNutritionModelCreateResult
+    {
+        public UserNutritionModelCreateResult()
+        {
+            Result = new ResultModel();
+        }
+
+        public ResultModel Result { get; set; }
+    }
     #endregion
 }
