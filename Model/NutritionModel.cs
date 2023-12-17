@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Query.SqlExpressions;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Numerics;
 using System.Text.Json.Serialization;
@@ -54,11 +55,15 @@ namespace TechroseDemo
     {
         public NutritionModel()
         {
-            Id = long.MinValue;
+            Id = int.MinValue;
         }
 
+        [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [Column("id")]
-        public long Id { get; set; }
+        public int Id { get; set; }
+
+        public virtual ICollection<UserNutritionModel>? UserNutritionModels { get; set; }
     }
 
     public class NutritionModelListArgs

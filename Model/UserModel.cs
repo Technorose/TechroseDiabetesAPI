@@ -51,6 +51,8 @@ namespace TechroseDemo
 
         [Column("salted_password")]
         public required string SaltedPassword { get; set; }
+
+        public virtual ICollection<UserNutritionModel>? UserNutritionModels { get; set; }
     }
 
     public class UserModelDeleteArgs

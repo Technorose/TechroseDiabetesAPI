@@ -15,8 +15,11 @@ namespace TechroseDemo
         {
             optionsBuilder.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"));
         }
+
         public DbSet<UserModel> Users { get; set; }
 
         public DbSet<NutritionModel> Nutritions { get; set; }
+
+        public DbSet<UserNutritionModel> UserNutritions { get; set; }
     }
 }
