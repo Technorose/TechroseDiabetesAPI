@@ -1,4 +1,6 @@
-﻿namespace TechroseDemo
+﻿using System.Text.Json.Serialization;
+
+namespace TechroseDemo
 {
     public class TokenCheckModelArgs
     { 
@@ -7,6 +9,7 @@
             ClientTime = default(DateTime);
         }
 
+        [JsonPropertyName("client_time")]
         public DateTime ClientTime { get; set; }
     }
 
@@ -19,8 +22,10 @@
             Result = new ResultModel();
         }
 
+        [JsonPropertyName("client_time")]
         public DateTime ClientTime { get; set; }
 
+        [JsonPropertyName("server_time")]
         public DateTime ServerTime { get; set; }
 
         public ResultModel Result { get; set; }

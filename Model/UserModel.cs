@@ -1,4 +1,5 @@
-﻿using Microsoft.IdentityModel.Tokens;
+﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.IdentityModel.Tokens;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text.Json.Serialization;
@@ -17,46 +18,50 @@ namespace TechroseDemo
         }
 
         [Column("first_name")]
+        [JsonPropertyName("first_name")]
         public required string FirstName { get; set; }
 
         [Column("last_name")]
+        [JsonPropertyName("last_name")]
         public required string LastName { get; set; }
 
         [Column("email")]
+        [JsonPropertyName("email")]
         public required string Email { get; set; }
 
         [Column("phone_number")]
+        [JsonPropertyName("phone_number")]
         public required string PhoneNumber { get; set; }
 
         [Column("birth_date")]
+        [JsonPropertyName("birth_date")]
         public required DateTime BirthDate { get; set;}
     }
 
     [Table("users")]
     public class UserModel : UserBaseModel
     {
-        public UserModel()
-        {
-            Id = string.Empty;
-            HashedPassword = string.Empty;
-        }
-
+        [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [Column("id")]
-        public string Id { get; set; }
+        public int Id { get; set; }
 
         [Column("hashed_password")]
-        public string HashedPassword { get; set; }
+        public required string HashedPassword { get; set; }
+
+        [Column("salted_password")]
+        public required string SaltedPassword { get; set; }
     }
 
     public class UserModelDeleteArgs
     {
         public UserModelDeleteArgs()
         {
-            Id = string.Empty;
+            Id = int.MinValue;
         }
 
-        [JsonPropertyName("id")]
-        public string Id { get; set; }
+        [FromQuery(Name = "id")]
+        public int Id { get; set; }
     }
 
     public class UserModelDeleteResult
@@ -77,8 +82,10 @@ namespace TechroseDemo
             SecurityTokenKey = string.Empty;
         }
 
+        [JsonPropertyName("password")]
         public string Password { get; set; }
 
+        [JsonPropertyName("security_token_key")]
         public string SecurityTokenKey { get; set;}
     }
 
@@ -101,10 +108,13 @@ namespace TechroseDemo
             SecurityTokenKey = string.Empty;
         }
 
+        [JsonPropertyName("user_name")]
         public string UserName { get; set; }
 
+        [JsonPropertyName("password")]
         public string Password { get; set; }
 
+        [JsonPropertyName("security_token_key")]
         public string SecurityTokenKey { get; set;}
     }
 
@@ -112,16 +122,19 @@ namespace TechroseDemo
     {
         public UserModelLoginResult()
         {
-            Id = string.Empty;
+            Id = int.MinValue;
             FullName = string.Empty;
             Token = string.Empty;
             Result = new ResultModel();
         }
 
-        public string Id { get; set; }
-        
+        [JsonPropertyName("id")]
+        public int Id { get; set; }
+
+        [JsonPropertyName("full_name")]
         public string FullName { get; set; }
 
+        [JsonPropertyName("token")]
         public string Token { get; set; }
 
         public ResultModel Result { get; set; }

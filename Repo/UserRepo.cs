@@ -50,7 +50,7 @@ namespace TechroseDemo
             #endregion
 
             #region PasswordChecking
-            bool passwordCheck = PasswordHashing.PasswordHashCheck(new PasswordHashModel() { HashedPassword = userResult.HashedPassword, PasswordToHash = args.Password });
+            bool passwordCheck = PasswordHashing.PasswordHashCheck(new PasswordHashModel() { HashedPassword = userResult.HashedPassword, PasswordToHash = args.Password, Salt = userResult.SaltedPassword });
 
             if (!passwordCheck)
             {
@@ -63,18 +63,19 @@ namespace TechroseDemo
             #endregion
 
             #region Token
-            SymmetricSecurityKey securityKey = new SymmetricSecurityKey(System.Text.Encoding.UTF8.GetBytes(Constants.tConstant_SecretKey));
-            SigningCredentials credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
+            SymmetricSecurityKey secretKey = new SymmetricSecurityKey(System.Text.Encoding.UTF8.GetBytes(Constants.tConstant_SecretKey));
+
+            SigningCredentials credentials = new SigningCredentials(secretKey, SecurityAlgorithms.HmacSha256);
 
             Claim[] claims = new[]
             {
-                new Claim(ClaimTypes.Name, string.Concat(userResult.FirstName, userResult.LastName)),
+                new Claim(ClaimTypes.Name, string.Concat(userResult.FirstName, " ", userResult.LastName)),
                 new Claim(ClaimTypes.Email, userResult.Email)
             };
 
             JwtSecurityToken token = new JwtSecurityToken(
-                issuer: "",
-                audience: "",
+                issuer: "*azurewebsites.com",
+                audience: "*azurewebsites.com",
                 claims: claims,
                 expires: DateTime.UtcNow.AddHours(24),
                 signingCredentials: credentials
@@ -84,7 +85,7 @@ namespace TechroseDemo
             #endregion
 
             #region PreparingResponse
-            result.FullName = string.Concat(userResult.FirstName, userResult.LastName);
+            result.FullName = string.Concat(userResult.FirstName, " ", userResult.LastName);
             result.Id = userResult.Id;
             result.Token = tokenString;
             result.Result.Success = true;
@@ -183,6 +184,7 @@ namespace TechroseDemo
                 LastName = args.LastName,
                 BirthDate = args.BirthDate,
                 HashedPassword = hashedPassword.HashedPassword,
+                SaltedPassword = hashedPassword.Salt,
                 Email = args.Email,
                 PhoneNumber = args.PhoneNumber
             };
@@ -206,7 +208,7 @@ namespace TechroseDemo
             UserModelDeleteResult result = new();
 
             #region CheckCredential
-            if (args.Id.Equals(null) || args.Id.Trim().Equals(""))
+            if (args.Id.Equals(null) || args.Id.Equals(int.MinValue))
             {
                 result.Result.Success = false;
                 result.Result.ErrorCode = EnumErrorCodes.ERRORx0100.ToString();

@@ -33,7 +33,7 @@ namespace TechroseDemo
             var sw = new Stopwatch();
             sw.Start();
 
-            var hashedPassword = HashPassword(Encoding.UTF8.GetBytes(password), salt, rounds);
+            byte[]? hashedPassword = HashPassword(Encoding.UTF8.GetBytes(password), salt, rounds);
 
             p_passwordHashModel.HashedPassword = Convert.ToBase64String(hashedPassword);
             sw.Stop();
