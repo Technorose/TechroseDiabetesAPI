@@ -8,6 +8,7 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Localization;
 using System.Globalization;
+using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -66,6 +67,11 @@ builder.Services.AddSwaggerGen(option =>
     });
 
 });
+
+Log.Logger = new LoggerConfiguration()
+    .ReadFrom.Configuration(builder.Configuration)
+    .Enrich.FromLogContext()
+    .CreateLogger();
 
 builder.Services.AddTransient<IRepo, BaseRepo>();
 

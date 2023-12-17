@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.OpenApi.Extensions;
+using Serilog.Context;
 using TechroseDemo.Repo;
 using static TechroseDemo.Enums;
 
@@ -15,6 +16,9 @@ namespace TechroseDemo
         [HttpPost]
         public async Task<UserModelLoginResult> UserLogin([FromBody] UserModelLoginArgs args)
         {
+
+            Serilog.Log.Information("UserLogin Controller Triggered");
+
             UserModelLoginResult result = new();
 
             if (args.SecurityTokenKey != Constants.tConstant_SecurityTokenKey)
@@ -38,8 +42,17 @@ namespace TechroseDemo
                     result.Result.ErrorCode = EnumErrorCodes.ERRORx0001.ToString();
                     result.Result.ErrorDescription = EnumErrorCodes.ERRORx0001.ToDescription();
                     result.Result.ErrorException = Common.ExceptionToString(ex);
+
+                    LogContext.PushProperty("Exception", result.Result.ErrorException);
+                    LogContext.PushProperty(LogColumnNames.ErrorCode, result.Result.ErrorCode);
                 }
             });
+
+            LogContext.PushProperty(LogColumnNames.UserId, result.Id);
+            LogContext.PushProperty(LogColumnNames.Token, result.Token);
+            Serilog.Log.Information("UserLogin Controller Completed Successfully");
+
+            Serilog.Log.CloseAndFlush();
 
             return result;
         }
