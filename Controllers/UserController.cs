@@ -2,6 +2,8 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.OpenApi.Extensions;
 using Serilog.Context;
+using Serilog.Core;
+using System;
 using TechroseDemo.Repo;
 using static TechroseDemo.Enums;
 
@@ -14,10 +16,10 @@ namespace TechroseDemo
         [AllowAnonymous]
         [Route(nameof(UserLogin))]
         [HttpPost]
-        public async Task<UserModelLoginResult> UserLogin([FromBody] UserModelLoginArgs args)
+        public async Task<UserModelLoginResult> UserLogin([FromBody] UserModelLoginArgs args, [FromServices] ILoggerService loggerService)
         {
 
-            Serilog.Log.Information("UserLogin Controller Triggered");
+            loggerService.LogInformation("UserLogin Controller Triggered");
 
             UserModelLoginResult result = new();
 
@@ -26,6 +28,8 @@ namespace TechroseDemo
                 result.Result.Success = false;
                 result.Result.ErrorCode = EnumErrorCodes.ERRORx0001.ToString();
                 result.Result.ErrorDescription = EnumErrorCodes.ERRORx0001.ToDescription();
+
+                loggerService.LogWarning("UserLogin Controller Completed Failed", result.Result);
 
                 return result;
             }
@@ -43,14 +47,18 @@ namespace TechroseDemo
                     result.Result.ErrorDescription = EnumErrorCodes.ERRORx0001.ToDescription();
                     result.Result.ErrorException = Common.ExceptionToString(ex);
 
-                    LogContext.PushProperty("Exception", result.Result.ErrorException);
-                    LogContext.PushProperty(LogColumnNames.ErrorCode, result.Result.ErrorCode);
+                    loggerService.LogError("Exception in UserLogin: {@exception}", ex, result.Result);
                 }
             });
 
-            LogContext.PushProperty(LogColumnNames.UserId, result.Id);
-            LogContext.PushProperty(LogColumnNames.Token, result.Token);
-            Serilog.Log.Information("UserLogin Controller Completed Successfully");
+            if(result.Result.Success)
+            {
+                loggerService.LogInformation("UserLogin Controller Completed Successfully", result.Token, result.Id);
+            }
+            else
+            {
+                loggerService.LogWarning("UserLogin Controller Completed Failed", result.Result);
+            }
 
             Serilog.Log.CloseAndFlush();
 

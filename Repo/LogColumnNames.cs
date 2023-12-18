@@ -6,5 +6,6 @@
         public const string Details = "Details";
         public const string ErrorCode = "ErrorCode";
         public const string Token = "Token";
+        public const string Exception = "Exception";
     }
 }

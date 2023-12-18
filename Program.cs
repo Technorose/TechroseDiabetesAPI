@@ -73,6 +73,8 @@ Log.Logger = new LoggerConfiguration()
     .Enrich.FromLogContext()
     .CreateLogger();
 
+builder.Services.AddSingleton<ILoggerService, LoggerService>();
+
 builder.Services.AddTransient<IRepo, BaseRepo>();
 
 var app = builder.Build();
