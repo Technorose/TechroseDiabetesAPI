@@ -148,6 +148,15 @@ namespace TechroseDemo
                 return result;
             }
 
+            if (args.Weight.Equals(null) || args.Weight.Equals(double.MinValue))
+            {
+                result.Result.Success = false;
+                result.Result.ErrorCode = EnumErrorCodes.ERRORx0100.ToString();
+                result.Result.ErrorDescription = EnumErrorCodes.ERRORx0100.ToDescription();
+
+                return result;
+            }
+
             if (args.BirthDate.Equals(null))
             {
                 result.Result.Success = false;
@@ -186,7 +195,10 @@ namespace TechroseDemo
                 HashedPassword = hashedPassword.HashedPassword,
                 SaltedPassword = hashedPassword.Salt,
                 Email = args.Email,
-                PhoneNumber = args.PhoneNumber
+                PhoneNumber = args.PhoneNumber,
+                Weight = args.Weight,
+                TotalDoseValue = args.Weight * 0.55,
+                BloodSugarValue = args.BloodSugarValue
             };
             #endregion
 

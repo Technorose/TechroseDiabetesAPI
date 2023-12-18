@@ -11,6 +11,7 @@ namespace TechroseDemo
             UserId = int.MinValue;
             NutritionId = int.MinValue;
             Portion = double.MinValue;
+            BloodSugar = int.MinValue;
             MealTime = DateTime.Now;
         }
 
@@ -33,6 +34,10 @@ namespace TechroseDemo
         [JsonPropertyName("portion")]
         [Column("portion")]
         public required double Portion { get; set; }
+
+        [JsonPropertyName("blood_sugar")]
+        [Column("blood_sugar")]
+        public required int BloodSugar { get; set; }
 
         [JsonPropertyName("meal_time")]
         [Column("meal_time")]
@@ -61,8 +66,11 @@ namespace TechroseDemo
     {
         public UserNutritionModelCreateResult()
         {
+            InsulinDose = int.MinValue;
             Result = new ResultModel();
         }
+
+        public int InsulinDose { get; set; }
 
         public ResultModel Result { get; set; }
     }

@@ -39,6 +39,9 @@ namespace TechroseDemo
 
             [Description("The Nutrition must be valid!")]
             ERRORx0901,
+
+            [Description("The blood sugar value must be valid!")]
+            ERRORx0902,
             #endregion
         }
     }

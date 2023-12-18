@@ -9,8 +9,6 @@ namespace TechroseDemo
         {
             UserNutritionModelCreateResult result = new();
 
-            Console.WriteLine("args: ", args);
-
             if (args.UserId.Equals(int.MinValue) || args.UserId.Equals(null))
             {
                 result.Result.Success = false;
@@ -29,6 +27,15 @@ namespace TechroseDemo
                 return result;
             }
 
+            if (args.BloodSugar.Equals(int.MinValue) || args.BloodSugar.Equals(null))
+            {
+                result.Result.Success = false;
+                result.Result.ErrorCode = EnumErrorCodes.ERRORx0902.ToString();
+                result.Result.ErrorDescription = EnumErrorCodes.ERRORx0902.ToDescription();
+
+                return result;
+            }
+
             if (args.Portion.Equals(double.MinValue) || args.Portion.Equals(null))
             {
                 args.Portion = 1;
@@ -40,10 +47,13 @@ namespace TechroseDemo
                 NutritionId = args.NutritionId,
                 Portion = args.Portion,
                 UserId = args.UserId,
+                BloodSugar = args.BloodSugar
             };
 
             DatabaseContext.UserNutritions.Add(userNutrition);
             DatabaseContext.SaveChanges();
+
+            result.InsulinDose = (int)Math.Ceiling(500 / userNutrition.UserModel.TotalDoseValue);
 
             result.Result.Success = true;
             result.Result.ErrorCode = "";
