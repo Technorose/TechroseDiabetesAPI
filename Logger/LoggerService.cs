@@ -1,4 +1,4 @@
-﻿
+﻿using Serilog;
 using Serilog.Context;
 
 namespace TechroseDemo
@@ -6,38 +6,45 @@ namespace TechroseDemo
     public class LoggerService : ILoggerService
     {
 
-        public void LogInformation(string message)
+        #region Public Methods
+        public void LogInformation(string message, string functionName)
         {
-            Serilog.Log.Information(message);
+            Log.Information(message, functionName);
         }
 
-        public void LogInformation(string message, string token)
+        public void LogInformation(string message, string token, string functionName)
         {
-            LogContext.PushProperty(LogColumnNames.Token, token);
-            Serilog.Log.Information(message);
+            LogContext.PushProperty(LoggerStatic.Token, token);
+            Log.Information(message, functionName);
         }
 
-        public void LogInformation(string message, string token, int userId)
+        public void LogInformation(string message, string token, int userId, string functionName)
         {
-            LogContext.PushProperty(LogColumnNames.UserId, userId);
-            LogContext.PushProperty(LogColumnNames.Token, token);
-            Serilog.Log.Information(message);
+            LogContext.PushProperty(LoggerStatic.UserId, userId);
+            LogContext.PushProperty(LoggerStatic.Token, token);
+            Log.Information(message, functionName);
         }
 
-        public void LogError(string message, Exception exception, ResultModel resultModel)
+        public void LogError(string message, Exception exception, ResultModel resultModel, string functionName)
         {
-            LogContext.PushProperty(LogColumnNames.Exception, resultModel.ErrorException);
-            LogContext.PushProperty(LogColumnNames.ErrorCode, resultModel.ErrorCode);
-            LogContext.PushProperty(LogColumnNames.Details, resultModel.ErrorDescription);
-            Serilog.Log.Error(message, exception);
+            PushProperty(resultModel);
+            Log.Error(message, exception, functionName);
         }
 
-        public void LogWarning(string message, ResultModel resultModel)
+        public void LogWarning(string message, ResultModel resultModel, string functionName)
         {
-            LogContext.PushProperty(LogColumnNames.Exception, resultModel.ErrorException);
-            LogContext.PushProperty(LogColumnNames.ErrorCode, resultModel.ErrorCode);
-            LogContext.PushProperty(LogColumnNames.Details, resultModel.ErrorDescription);
-            Serilog.Log.Warning(message);
+            PushProperty(resultModel);
+            Log.Warning(message, functionName);
         }
+        #endregion
+
+        #region Private Methods
+        private static void PushProperty(ResultModel resultModel)
+        {
+            LogContext.PushProperty(LoggerStatic.Exception, resultModel.ErrorException);
+            LogContext.PushProperty(LoggerStatic.ErrorCode, resultModel.ErrorCode);
+            LogContext.PushProperty(LoggerStatic.Details, resultModel.ErrorDescription);
+        }
+        #endregion
     }
 }
