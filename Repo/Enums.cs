@@ -34,6 +34,9 @@ namespace TechroseDemo
             #endregion
 
             #region UserNutritionOperationsErrorEnums
+            [Description("Error Occurred While Getting Users List!")]
+            ERRORx0899,
+
             [Description("The User must be valid!")]
             ERRORx0900,
 

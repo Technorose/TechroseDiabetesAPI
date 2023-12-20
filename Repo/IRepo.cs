@@ -8,6 +8,8 @@
         UserModelCreateResult UserCreate(UserModelCreateArgs args);
 
         UserModelDeleteResult UserDelete(UserModelDeleteArgs args);
+
+        UserModelListResult UserList(UserModelListArgs args);
         #endregion
 
         #region NutritionRepo

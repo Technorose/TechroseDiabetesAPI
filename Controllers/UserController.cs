@@ -139,6 +139,31 @@ namespace TechroseDemo
             return result;
         }
         #endregion
+
+        [AllowAnonymous]
+        [Route(nameof(UserList))]
+        [HttpGet]
+        public async Task<UserModelListResult> UserList([FromQuery] UserModelListArgs args)
+        {
+            UserModelListResult result = new();
+
+            await Task.Run(() =>
+            {
+                try
+                {
+                    result = repoInterface.UserList(args);
+                }
+                catch(Exception ex)
+                {
+                    result.Result.Success = false;
+                    result.Result.ErrorCode = EnumErrorCodes.ERRORx0001.ToString();
+                    result.Result.ErrorDescription = EnumErrorCodes.ERRORx0001.ToDescription();
+                    result.Result.ErrorException = Common.ExceptionToString(ex);
+                }
+            });
+
+            return result;
+        }
         #endregion
     }
 }

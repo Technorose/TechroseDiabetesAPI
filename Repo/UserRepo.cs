@@ -257,6 +257,52 @@ namespace TechroseDemo
             return result;
         }
         #endregion
+
+        #region UserList
+        public UserModelListResult UserList(UserModelListArgs args)
+        {
+            UserModelListResult result = new();
+
+            #region CheckCredential
+            if (args.Limit.Equals(int.MinValue))
+            {
+                args.Limit = 10;
+            }
+
+            if (args.Offset.Equals(int.MinValue))
+            {
+                args.Offset = 0;
+            }
+            #endregion
+
+            #region TakeListFromDatabase
+            IQueryable<UserModel> query = DatabaseContext.Users
+                .OrderBy(u => u.Id)
+                .Skip(args.Offset)
+                .Take(args.Limit);
+            #endregion
+
+            #region CheckList
+            if (query.Equals(null))
+            {
+                result.Result.Success = false;
+                result.Result.ErrorCode = EnumErrorCodes.ERRORx0899.ToString();
+                result.Result.ErrorDescription = EnumErrorCodes.ERRORx0899.ToDescription();
+
+                return result;
+            }
+            #endregion
+
+            #region PreparingToResult
+            result.Users = [.. query];
+            result.Result.Success = true;
+            result.Result.ErrorCode = "";
+            result.Result.ErrorDescription = "";
+            #endregion
+
+            return result;
+        }
+        #endregion
         #endregion
     }
 }
