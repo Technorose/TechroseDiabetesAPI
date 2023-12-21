@@ -45,6 +45,9 @@ namespace TechroseDemo
 
             [Description("The blood sugar value must be valid!")]
             ERRORx0902,
+
+            [Description("Error Occurred While Creating User Nutritions!")]
+            ERRORx0903,
             #endregion
         }
     }

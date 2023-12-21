@@ -77,7 +77,7 @@ namespace TechroseDemo
                 issuer: "*azurewebsites.net",
                 audience: "*azurewebsites.net",
                 claims: claims,
-                expires: DateTime.UtcNow.AddHours(24),
+                expires: DateTime.UtcNow.AddDays(30),
                 signingCredentials: credentials
             );
 

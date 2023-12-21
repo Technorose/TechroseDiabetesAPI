@@ -19,7 +19,7 @@
         #endregion
 
         #region UserNutritionRepo
-        UserNutritionModelCreateResult UserNutritionCreate(UserNutritionModelCreateArgs args);
+        Task<UserNutritionModelCreateResult> UserNutritionCreate(UserNutritionModelCreateArgs args);
         #endregion
     }
 }

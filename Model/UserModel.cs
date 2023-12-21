@@ -65,6 +65,7 @@ namespace TechroseDemo
         [Column("total_dose_value")]
         public required double TotalDoseValue { get; set; }
 
+        [JsonIgnore]
         public virtual ICollection<UserNutritionModel>? UserNutritionModels { get; set; }
     }
 

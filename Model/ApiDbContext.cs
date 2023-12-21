@@ -18,6 +18,8 @@ namespace TechroseDemo
 
         public DbSet<UserModel> Users { get; set; }
 
+        public DbSet<MealModel> Meals { get; set; }
+
         public DbSet<NutritionModel> Nutritions { get; set; }
 
         public DbSet<UserNutritionModel> UserNutritions { get; set; }
