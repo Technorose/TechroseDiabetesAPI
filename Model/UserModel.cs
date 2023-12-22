@@ -2,6 +2,7 @@
 using Microsoft.IdentityModel.Tokens;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Runtime.Serialization;
 using System.Text.Json.Serialization;
 
 namespace TechroseDemo
@@ -63,10 +64,39 @@ namespace TechroseDemo
         public required string SaltedPassword { get; set; }
 
         [Column("total_dose_value")]
+        [JsonPropertyName("total_dose_value")]
         public required double TotalDoseValue { get; set; }
 
         [JsonIgnore]
         public virtual ICollection<UserNutritionModel>? UserNutritionModels { get; set; }
+
+        public UserDto ToDto()
+        {
+            return new UserDto
+            {
+                Id = Id,
+                BirthDate = BirthDate,
+                BloodSugarValue = BloodSugarValue,
+                Email = Email,
+                FirstName = FirstName,
+                LastName = LastName,
+                PhoneNumber = PhoneNumber,
+                TotalDoseValue = TotalDoseValue,
+                Weight = Weight,
+            };
+        }
+    }
+
+    public class UserDto : UserBaseModel
+    {
+        [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        [Column("id")]
+        public int Id { get; set; }
+
+        [Column("total_dose_value")]
+        [JsonPropertyName("total_dose_value")]
+        public required double TotalDoseValue { get; set; }
     }
 
     public class UserModelDeleteArgs
@@ -175,12 +205,12 @@ namespace TechroseDemo
     {
         public UserModelListResult()
         {
-            Users = new List<UserModel>();
+            Users = new List<UserDto>();
             Result = new ResultModel();
         }
 
         [JsonPropertyName("users")]
-        public List<UserModel> Users { get; set; }
+        public List<UserDto> Users { get; set; }
 
         [JsonPropertyName("result")]
         public ResultModel Result { get; set; }

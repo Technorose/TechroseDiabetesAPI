@@ -44,11 +44,6 @@ namespace TechroseDemo
     [Table("meals")]
     public class MealModel : MealModelBase
     {
-        public MealModel()
-        {
-            Id = int.MinValue;
-        }
-
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [Column("id")]

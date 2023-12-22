@@ -276,10 +276,11 @@ namespace TechroseDemo
             #endregion
 
             #region TakeListFromDatabase
-            IQueryable<UserModel> query = DatabaseContext.Users
+            List<UserModel> query = DatabaseContext.Users
                 .OrderBy(u => u.Id)
                 .Skip(args.Offset)
-                .Take(args.Limit);
+                .Take(args.Limit)
+                .ToList();
             #endregion
 
             #region CheckList
@@ -294,7 +295,7 @@ namespace TechroseDemo
             #endregion
 
             #region PreparingToResult
-            result.Users = [.. query];
+            result.Users = query.Select(model => model.ToDto()).ToList();
             result.Result.Success = true;
             result.Result.ErrorCode = "";
             result.Result.ErrorDescription = "";
