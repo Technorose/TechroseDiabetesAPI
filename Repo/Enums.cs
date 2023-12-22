@@ -33,6 +33,14 @@ namespace TechroseDemo
             ERRORx0601,
             #endregion
 
+            #region MealOperationsErrorEnums
+            [Description("The meal name must be valid!")]
+            ERRORx0699,
+
+            [Description("The meal time must be valid!")]
+            ERRORx0700,
+            #endregion
+
             #region UserNutritionOperationsErrorEnums
             [Description("Error Occurred While Getting Users List!")]
             ERRORx0899,
@@ -48,6 +56,23 @@ namespace TechroseDemo
 
             [Description("Error Occurred While Creating User Nutritions!")]
             ERRORx0903,
+            #endregion
+        }
+
+        public enum EnumMealNames
+        {
+            #region MealNames
+            [Description("breakfast")]
+            Breakfast = 1,
+
+            [Description("lunch")]
+            Lunch = 2,
+
+            [Description("dinner")]
+            Dinner = 3,
+
+            [Description("snack")]
+            Snack = 4,
             #endregion
         }
     }

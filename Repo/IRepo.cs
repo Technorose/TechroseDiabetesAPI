@@ -21,5 +21,9 @@
         #region UserNutritionRepo
         Task<UserNutritionModelCreateResult> UserNutritionCreate(UserNutritionModelCreateArgs args);
         #endregion
+
+        #region MealRepo
+        MealModelCreateResult MealCreate(MealModelCreateArgs args);
+        #endregion
     }
 }

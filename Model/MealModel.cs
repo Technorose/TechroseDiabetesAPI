@@ -4,7 +4,19 @@ using System.Text.Json.Serialization;
 
 namespace TechroseDemo
 {
-    public class MealModelBase
+    public class MealModelBaseArgs
+    {
+        public MealModelBaseArgs() 
+        {
+            MealTime = DateTime.MinValue;
+        }
+
+        [Column("meal_time")]
+        [JsonPropertyName("meal_time")]
+        public required DateTime MealTime { get; set; }
+    }
+
+    public class MealModelBase : MealModelBaseArgs
     {
         public MealModelBase() 
         {
@@ -13,7 +25,6 @@ namespace TechroseDemo
             TotalCarbohydrate = double.MinValue;
             TotalSugar = double.MinValue;
             BloodSugar = double.MinValue;
-            MealTime = DateTime.Now;
         }
 
         [Column("meal_name")]
@@ -35,10 +46,6 @@ namespace TechroseDemo
         [Column("blood_sugar")]
         [JsonPropertyName("blood_sugar")]
         public required double BloodSugar { get; set; }
-
-        [Column("meal_time")]
-        [JsonPropertyName("meal_time")]
-        public required DateTime MealTime { get; set; }
     }
 
     [Table("meals")]
@@ -51,5 +58,26 @@ namespace TechroseDemo
 
         [JsonIgnore]
         public virtual ICollection<UserNutritionModel>? UserNutritionModels { get; set; }
+    }
+
+    public class MealModelCreateArgs : MealModelBaseArgs
+    {
+        public MealModelCreateArgs()
+        {
+            MealNameCode = int.MinValue;
+        }
+
+        [JsonPropertyName("meal_name_code")]
+        public int MealNameCode { get; set; }
+    }
+
+    public class MealModelCreateResult
+    {
+        public MealModelCreateResult()
+        {
+            Result = new ResultModel();
+        }
+
+        public ResultModel Result { get; set; }
     }
 }
