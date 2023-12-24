@@ -140,7 +140,7 @@ namespace TechroseDemo
         }
         #endregion
 
-        [Authorize]
+        [AllowAnonymous]
         [Route(nameof(UserList))]
         [HttpGet]
         public async Task<UserModelListResult> UserList([FromQuery] UserModelListArgs args)

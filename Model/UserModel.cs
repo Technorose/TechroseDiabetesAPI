@@ -69,25 +69,9 @@ namespace TechroseDemo
 
         [JsonIgnore]
         public virtual ICollection<UserNutritionModel>? UserNutritionModels { get; set; }
-
-        public UserDto ToDto()
-        {
-            return new UserDto
-            {
-                Id = Id,
-                BirthDate = BirthDate,
-                BloodSugarValue = BloodSugarValue,
-                Email = Email,
-                FirstName = FirstName,
-                LastName = LastName,
-                PhoneNumber = PhoneNumber,
-                TotalDoseValue = TotalDoseValue,
-                Weight = Weight,
-            };
-        }
     }
 
-    public class UserDto : UserBaseModel
+    public class UserModelDto : UserBaseModel
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
@@ -205,12 +189,12 @@ namespace TechroseDemo
     {
         public UserModelListResult()
         {
-            Users = new List<UserDto>();
+            Users = new List<UserModelDto>();
             Result = new ResultModel();
         }
 
         [JsonPropertyName("users")]
-        public List<UserDto> Users { get; set; }
+        public List<UserModelDto> Users { get; set; }
 
         [JsonPropertyName("result")]
         public ResultModel Result { get; set; }

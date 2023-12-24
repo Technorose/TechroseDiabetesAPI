@@ -295,7 +295,7 @@ namespace TechroseDemo
             #endregion
 
             #region PreparingToResult
-            result.Users = query.Select(model => model.ToDto()).ToList();
+            result.Users = Mapper.Map<List<UserModelDto>>(query);
             result.Result.Success = true;
             result.Result.ErrorCode = "";
             result.Result.ErrorDescription = "";
