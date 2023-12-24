@@ -33,12 +33,63 @@ namespace TechroseDemo
             ERRORx0601,
             #endregion
 
+            #region MealOperationsErrorEnums
+            [Description("The blood sugar must be valid!")]
+            ERRORx0698,
+
+            [Description("The meal name must be valid!")]
+            ERRORx0699,
+
+            [Description("The meal time must be valid!")]
+            ERRORx0700,
+
+            [Description("The meal id must be valid!")]
+            ERRORx0701,
+
+            [Description("The user nutritions id's must be valid!")]
+            ERRORx0702,
+
+            [Description("The meal not found on records!")]
+            ERRORx0703,
+            #endregion
+
             #region UserNutritionOperationsErrorEnums
+            [Description("Error Occurred While Getting Users List!")]
+            ERRORx0899,
+
             [Description("The User must be valid!")]
             ERRORx0900,
 
             [Description("The Nutrition must be valid!")]
             ERRORx0901,
+
+            [Description("The blood sugar value must be valid!")]
+            ERRORx0902,
+
+            [Description("Error Occurred While Creating User Nutritions!")]
+            ERRORx0903,
+            #endregion
+
+            #region MealNamesCodesOperationsErrorEnums
+            [Description("Error Occurred While Getting Meal Names Codes List!")]
+            ERRORx0995
+            #endregion
+        }
+
+        public enum EnumMealNames
+        {
+            #region MealNames
+            [Description("breakfast")]
+            Breakfast = 1,
+
+            [Description("lunch")]
+            Lunch = 2,
+
+            [Description("dinner")]
+            Dinner = 3,
+
+            [Description("snack")]
+            Snack = 4,
             #endregion
         }
     }

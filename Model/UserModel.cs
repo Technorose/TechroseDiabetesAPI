@@ -2,6 +2,7 @@
 using Microsoft.IdentityModel.Tokens;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Runtime.Serialization;
 using System.Text.Json.Serialization;
 
 namespace TechroseDemo
@@ -14,6 +15,8 @@ namespace TechroseDemo
             LastName = string.Empty;
             Email = string.Empty;
             PhoneNumber = string.Empty;
+            Weight = double.MinValue;
+            BloodSugarValue = double.MinValue;
             BirthDate = default(DateTime);
         }
 
@@ -32,6 +35,14 @@ namespace TechroseDemo
         [Column("phone_number")]
         [JsonPropertyName("phone_number")]
         public required string PhoneNumber { get; set; }
+
+        [Column("weight")]
+        [JsonPropertyName("weight")]
+        public required double Weight { get; set; }
+
+        [Column("blood_sugar_value")]
+        [JsonPropertyName("blood_sugar_value")]
+        public required double BloodSugarValue { get; set; }
 
         [Column("birth_date")]
         [JsonPropertyName("birth_date")]
@@ -52,7 +63,24 @@ namespace TechroseDemo
         [Column("salted_password")]
         public required string SaltedPassword { get; set; }
 
+        [Column("total_dose_value")]
+        [JsonPropertyName("total_dose_value")]
+        public required double TotalDoseValue { get; set; }
+
+        [JsonIgnore]
         public virtual ICollection<UserNutritionModel>? UserNutritionModels { get; set; }
+    }
+
+    public class UserModelDto : UserBaseModel
+    {
+        [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        [Column("id")]
+        public int Id { get; set; }
+
+        [Column("total_dose_value")]
+        [JsonPropertyName("total_dose_value")]
+        public required double TotalDoseValue { get; set; }
     }
 
     public class UserModelDeleteArgs
@@ -139,6 +167,36 @@ namespace TechroseDemo
         [JsonPropertyName("token")]
         public string Token { get; set; }
 
+        public ResultModel Result { get; set; }
+    }
+
+    public class UserModelListArgs
+    {
+        public UserModelListArgs()
+        {
+            Limit = int.MinValue;
+            Offset = int.MinValue;
+        }
+
+        [FromQuery(Name = "limit")]
+        public int Limit { get; set; }
+
+        [FromQuery(Name = "offset")]
+        public int Offset { get; set; }
+    }
+
+    public class UserModelListResult
+    {
+        public UserModelListResult()
+        {
+            Users = new List<UserModelDto>();
+            Result = new ResultModel();
+        }
+
+        [JsonPropertyName("users")]
+        public List<UserModelDto> Users { get; set; }
+
+        [JsonPropertyName("result")]
         public ResultModel Result { get; set; }
     }
 }

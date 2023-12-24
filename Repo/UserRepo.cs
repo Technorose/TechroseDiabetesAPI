@@ -77,7 +77,7 @@ namespace TechroseDemo
                 issuer: "*azurewebsites.net",
                 audience: "*azurewebsites.net",
                 claims: claims,
-                expires: DateTime.UtcNow.AddHours(24),
+                expires: DateTime.UtcNow.AddDays(30),
                 signingCredentials: credentials
             );
 
@@ -148,6 +148,15 @@ namespace TechroseDemo
                 return result;
             }
 
+            if (args.Weight.Equals(null) || args.Weight.Equals(double.MinValue))
+            {
+                result.Result.Success = false;
+                result.Result.ErrorCode = EnumErrorCodes.ERRORx0100.ToString();
+                result.Result.ErrorDescription = EnumErrorCodes.ERRORx0100.ToDescription();
+
+                return result;
+            }
+
             if (args.BirthDate.Equals(null))
             {
                 result.Result.Success = false;
@@ -186,7 +195,10 @@ namespace TechroseDemo
                 HashedPassword = hashedPassword.HashedPassword,
                 SaltedPassword = hashedPassword.Salt,
                 Email = args.Email,
-                PhoneNumber = args.PhoneNumber
+                PhoneNumber = args.PhoneNumber,
+                Weight = args.Weight,
+                TotalDoseValue = args.Weight * 0.55,
+                BloodSugarValue = args.BloodSugarValue
             };
             #endregion
 
@@ -241,6 +253,53 @@ namespace TechroseDemo
             result.Result.Success = true;
             result.Result.ErrorCode = "";
             result.Result.ErrorDescription = "";
+
+            return result;
+        }
+        #endregion
+
+        #region UserList
+        public UserModelListResult UserList(UserModelListArgs args)
+        {
+            UserModelListResult result = new();
+
+            #region CheckCredential
+            if (args.Limit.Equals(int.MinValue))
+            {
+                args.Limit = 10;
+            }
+
+            if (args.Offset.Equals(int.MinValue))
+            {
+                args.Offset = 0;
+            }
+            #endregion
+
+            #region TakeListFromDatabase
+            List<UserModel> query = DatabaseContext.Users
+                .OrderBy(u => u.Id)
+                .Skip(args.Offset)
+                .Take(args.Limit)
+                .ToList();
+            #endregion
+
+            #region CheckList
+            if (query.Equals(null))
+            {
+                result.Result.Success = false;
+                result.Result.ErrorCode = EnumErrorCodes.ERRORx0899.ToString();
+                result.Result.ErrorDescription = EnumErrorCodes.ERRORx0899.ToDescription();
+
+                return result;
+            }
+            #endregion
+
+            #region PreparingToResult
+            result.Users = Mapper.Map<List<UserModelDto>>(query);
+            result.Result.Success = true;
+            result.Result.ErrorCode = "";
+            result.Result.ErrorDescription = "";
+            #endregion
 
             return result;
         }

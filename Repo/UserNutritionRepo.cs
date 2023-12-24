@@ -5,45 +5,56 @@ namespace TechroseDemo
 {
     public partial class BaseRepo : IRepo
     {
-        public UserNutritionModelCreateResult UserNutritionCreate(UserNutritionModelCreateArgs args)
+        public async Task<UserNutritionModelCreateResult> UserNutritionCreate(UserNutritionModelCreateArgs args)
         {
             UserNutritionModelCreateResult result = new();
 
-            Console.WriteLine("args: ", args);
 
-            if (args.UserId.Equals(int.MinValue) || args.UserId.Equals(null))
+            #pragma warning disable CS8619
+            List<UserNutritionModel> userNutritionsToAdd = args.Select(
+                    arg =>
+                    {
+                        if (arg.UserId.Equals(int.MinValue) || arg.UserId.Equals(null))
+                        {
+                            return null;
+                        }
+
+                        if (arg.NutritionId.Equals(int.MinValue) || arg.NutritionId.Equals(null))
+                        {
+                            return null;
+                        }
+
+                        if (arg.MealId.Equals(int.MinValue) || arg.MealId.Equals(null))
+                        {
+                            return null;
+                        }
+
+                        return new UserNutritionModel()
+                        {
+                            MealId = arg.MealId,
+                            MealModel = arg.MealModel,
+                            NutritionId = arg.NutritionId,
+                            Portion = arg.Portion.Equals(int.MinValue) ? 1 : arg.Portion,
+                            UserId = arg.UserId,
+                            MealTime = arg.MealTime
+                        };
+                    })
+                .Where(model => model != null)
+                .ToList();
+
+            if (userNutritionsToAdd.Count != args.Count)
             {
                 result.Result.Success = false;
-                result.Result.ErrorCode = EnumErrorCodes.ERRORx0900.ToString();
-                result.Result.ErrorDescription = EnumErrorCodes.ERRORx0900.ToDescription();
+                result.Result.ErrorCode = EnumErrorCodes.ERRORx0903.ToString();
+                result.Result.ErrorDescription = EnumErrorCodes.ERRORx0903.ToDescription();
 
                 return result;
             }
 
-            if (args.NutritionId.Equals(int.MinValue) || args.NutritionId.Equals(null))
-            {
-                result.Result.Success = false;
-                result.Result.ErrorCode = EnumErrorCodes.ERRORx0901.ToString();
-                result.Result.ErrorDescription = EnumErrorCodes.ERRORx0901.ToDescription();
+            await DatabaseContext.UserNutritions.AddRangeAsync(userNutritionsToAdd);
+            
+            await DatabaseContext.SaveChangesAsync();
 
-                return result;
-            }
-
-            if (args.Portion.Equals(double.MinValue) || args.Portion.Equals(null))
-            {
-                args.Portion = 1;
-            }
-
-            UserNutritionModel userNutrition = new()
-            {
-                MealTime = args.MealTime,
-                NutritionId = args.NutritionId,
-                Portion = args.Portion,
-                UserId = args.UserId,
-            };
-
-            DatabaseContext.UserNutritions.Add(userNutrition);
-            DatabaseContext.SaveChanges();
 
             result.Result.Success = true;
             result.Result.ErrorCode = "";

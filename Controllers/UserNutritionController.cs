@@ -18,11 +18,11 @@ namespace TechroseDemo
 
             UserNutritionModelCreateResult result = new();
 
-            await Task.Run(() =>
+            await Task.Run(async () =>
             {
                 try
                 {
-                    result = repoInterface.UserNutritionCreate(args);
+                    result = await repoInterface.UserNutritionCreate(args);
                 }
                 catch (Exception ex)
                 {

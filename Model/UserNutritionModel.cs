@@ -10,13 +10,14 @@ namespace TechroseDemo
         {
             UserId = int.MinValue;
             NutritionId = int.MinValue;
+            MealId = int.MinValue;
             Portion = double.MinValue;
             MealTime = DateTime.Now;
         }
 
         [JsonPropertyName("user_id")]
         [Column("user_id")]
-        [ForeignKey("UserModel")]
+        [ForeignKey(nameof(UserModel))]
         public required int UserId { get; set; }
 
         [JsonIgnore]
@@ -24,11 +25,19 @@ namespace TechroseDemo
 
         [JsonPropertyName("nutrition_id")]
         [Column("nutrition_id")]
-        [ForeignKey("NutritionModel")]
+        [ForeignKey(nameof(NutritionModel))]
         public required int NutritionId { get; set; }
 
         [JsonIgnore]
         public virtual NutritionModel? NutritionModel { get; set; }
+
+        [JsonPropertyName("meal_id")]
+        [Column("meal_id")]
+        [ForeignKey(nameof(MealModel))]
+        public required int MealId { get; set; }
+
+        [JsonIgnore]
+        public virtual MealModel? MealModel { get; set; }
 
         [JsonPropertyName("portion")]
         [Column("portion")]
@@ -49,7 +58,7 @@ namespace TechroseDemo
     }
 
     #region UserNutritionCreateModels
-    public class UserNutritionModelCreateArgs : UserNutritionBaseModel
+    public class UserNutritionModelCreateArgs : List<UserNutritionBaseModel>
     {
         public UserNutritionModelCreateArgs() 
         {

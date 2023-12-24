@@ -19,6 +19,7 @@ namespace TechroseDemo
             Cholesterol = string.Empty;
             Caffeine = string.Empty;
             Sugars = string.Empty;
+            Carbohydrate = string.Empty;
         }
 
         [Column("name")]
@@ -48,6 +49,10 @@ namespace TechroseDemo
         [Column("sugars")]
         [JsonPropertyName("sugars")]
         public required string Sugars { get; set;}
+
+        [Column("carbohydrate")]
+        [JsonPropertyName("carbohydrate")]
+        public required string Carbohydrate { get; set;}
     }
 
     [Table("nutritions")]

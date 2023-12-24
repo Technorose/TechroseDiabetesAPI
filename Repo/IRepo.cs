@@ -8,6 +8,8 @@
         UserModelCreateResult UserCreate(UserModelCreateArgs args);
 
         UserModelDeleteResult UserDelete(UserModelDeleteArgs args);
+
+        UserModelListResult UserList(UserModelListArgs args);
         #endregion
 
         #region NutritionRepo
@@ -17,7 +19,18 @@
         #endregion
 
         #region UserNutritionRepo
-        UserNutritionModelCreateResult UserNutritionCreate(UserNutritionModelCreateArgs args);
+        Task<UserNutritionModelCreateResult> UserNutritionCreate(UserNutritionModelCreateArgs args);
+        #endregion
+
+        #region MealRepo
+        MealModelCreateResult MealCreate(MealModelCreateArgs args);
+
+        MealModelUpdateResult MealUpdate(MealModelUpdateArgs args);
+
+        #endregion
+
+        #region MealNamesCodesRepo
+        MealNamesCodesModelListResult MealNamesCodesList(MealNamesCodesModelListArgs args);
         #endregion
     }
 }
