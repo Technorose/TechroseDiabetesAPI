@@ -8,7 +8,7 @@ namespace TechroseDemo
     public partial class BaseController : ControllerBase
     {
         #region MealCreateAPI
-        [AllowAnonymous]
+        [Authorize]
         [Route(nameof(MealCreate))]
         [HttpPost]
         public async Task<MealModelCreateResult> MealCreate([FromBody] MealModelCreateArgs args)
@@ -35,7 +35,7 @@ namespace TechroseDemo
         #endregion
 
         #region MealUpdateAPI
-        [AllowAnonymous]
+        [Authorize]
         [Route(nameof(MealUpdate))]
         [HttpPost]
         public async Task<MealModelUpdateResult> MealUpdate([FromBody] MealModelUpdateArgs args)

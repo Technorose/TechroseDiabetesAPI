@@ -7,7 +7,7 @@ namespace TechroseDemo
 {
     public partial class BaseController : ControllerBase
     {
-        [AllowAnonymous]
+        [Authorize]
         [Route(nameof(MealNamesCodesList))]
         [HttpGet]
         public async Task<MealNamesCodesModelListResult> MealNamesCodesList([FromQuery] MealNamesCodesModelListArgs args)

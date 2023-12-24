@@ -17,7 +17,7 @@ namespace TechroseDemo
 
         [JsonPropertyName("user_id")]
         [Column("user_id")]
-        [ForeignKey("UserModel")]
+        [ForeignKey(nameof(UserModel))]
         public required int UserId { get; set; }
 
         [JsonIgnore]
@@ -25,7 +25,7 @@ namespace TechroseDemo
 
         [JsonPropertyName("nutrition_id")]
         [Column("nutrition_id")]
-        [ForeignKey("NutritionModel")]
+        [ForeignKey(nameof(NutritionModel))]
         public required int NutritionId { get; set; }
 
         [JsonIgnore]
@@ -33,7 +33,7 @@ namespace TechroseDemo
 
         [JsonPropertyName("meal_id")]
         [Column("meal_id")]
-        [ForeignKey("MealModel")]
+        [ForeignKey(nameof(MealModel))]
         public required int MealId { get; set; }
 
         [JsonIgnore]
