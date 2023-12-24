@@ -57,6 +57,11 @@ namespace TechroseDemo
             [Description("Error Occurred While Creating User Nutritions!")]
             ERRORx0903,
             #endregion
+
+            #region MealNamesCodesOperationsErrorEnums
+            [Description("Error Occurred While Getting Meal Names Codes List!")]
+            ERRORx0995
+            #endregion
         }
 
         public enum EnumMealNames

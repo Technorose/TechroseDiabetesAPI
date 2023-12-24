@@ -27,24 +27,6 @@ namespace TechroseDemo
                 return result;
             }
 
-            string mealName = string.Empty;
-
-            foreach(EnumMealNames enumMeal in Enum.GetValues(typeof(EnumMealNames)))
-            {
-                if (enumMeal.Equals(args.MealNameCode))
-                {
-                    mealName = enumMeal.ToDescription();
-                }
-            }
-
-            if (mealName.Trim().Equals(""))
-            {
-                result.Result.Success = false;
-                result.Result.ErrorCode = EnumErrorCodes.ERRORx0699.ToString();
-                result.Result.ErrorDescription = EnumErrorCodes.ERRORx0699.ToDescription();
-
-                return result;
-            }
 
             MealModel meal = new()
             {
@@ -53,7 +35,7 @@ namespace TechroseDemo
                 TotalCalorie = 0.0,
                 TotalCarbohydrate = 0.0,
                 TotalSugar = 0.0,
-                MealName = mealName,
+                MealNameCode = args.MealNameCode,
             };
 
             DatabaseContext.Meals.Add(meal);

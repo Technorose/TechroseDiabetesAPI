@@ -25,5 +25,9 @@
         #region MealRepo
         MealModelCreateResult MealCreate(MealModelCreateArgs args);
         #endregion
+
+        #region MealNamesCodesRepo
+        MealNamesCodesModelListResult MealNamesCodesList(MealNamesCodesModelListArgs args);
+        #endregion
     }
 }

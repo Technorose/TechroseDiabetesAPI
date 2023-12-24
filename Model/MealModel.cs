@@ -20,16 +20,20 @@ namespace TechroseDemo
     {
         public MealModelBase() 
         {
-            MealName = string.Empty;
+            MealNameCode = int.MinValue;
             TotalCalorie = double.MinValue;
             TotalCarbohydrate = double.MinValue;
             TotalSugar = double.MinValue;
             BloodSugar = double.MinValue;
         }
 
-        [Column("meal_name")]
-        [JsonPropertyName("meal_name")]
-        public required string MealName { get; set; }
+        [Column("meal_name_code")]
+        [JsonPropertyName("meal_name_code")]
+        [ForeignKey(nameof(MealNamesCodes))]
+        public required int MealNameCode { get; set; }
+
+        [JsonIgnore]
+        public virtual MealNamesCodesModel? MealNamesCodes { get; set; } 
 
         [Column("total_calorie")]
         [JsonPropertyName("total_calorie")]
