@@ -140,7 +140,8 @@ namespace TechroseDemo
         }
         #endregion
 
-        [AllowAnonymous]
+        #region UserListAPI
+        [Authorize]
         [Route(nameof(UserList))]
         [HttpGet]
         public async Task<UserModelListResult> UserList([FromQuery] UserModelListArgs args)
@@ -164,6 +165,7 @@ namespace TechroseDemo
 
             return result;
         }
+        #endregion
         #endregion
     }
 }
