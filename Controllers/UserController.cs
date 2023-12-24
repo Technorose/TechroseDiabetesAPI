@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.OpenApi.Extensions;
+using Serilog;
 using TechroseDemo.Repo;
 using static TechroseDemo.Enums;
 
@@ -13,8 +13,10 @@ namespace TechroseDemo
         [AllowAnonymous]
         [Route(nameof(UserLogin))]
         [HttpPost]
-        public async Task<UserModelLoginResult> UserLogin([FromBody] UserModelLoginArgs args)
+        public async Task<UserModelLoginResult> UserLogin([FromBody] UserModelLoginArgs args, [FromServices] ILoggerService loggerService)
         {
+            loggerService.LogInformation(LoggerStatic.LogTrigger, nameof(UserLogin));
+
             UserModelLoginResult result = new();
 
             if (args.SecurityTokenKey != Constants.tConstant_SecurityTokenKey)
@@ -22,6 +24,8 @@ namespace TechroseDemo
                 result.Result.Success = false;
                 result.Result.ErrorCode = EnumErrorCodes.ERRORx0001.ToString();
                 result.Result.ErrorDescription = EnumErrorCodes.ERRORx0001.ToDescription();
+
+                loggerService.LogWarning(LoggerStatic.LogFail, result.Result, nameof(UserLogin));
 
                 return result;
             }
@@ -38,19 +42,33 @@ namespace TechroseDemo
                     result.Result.ErrorCode = EnumErrorCodes.ERRORx0001.ToString();
                     result.Result.ErrorDescription = EnumErrorCodes.ERRORx0001.ToDescription();
                     result.Result.ErrorException = Common.ExceptionToString(ex);
+
+                    loggerService.LogError(LoggerStatic.LogException, ex, result.Result, nameof(UserLogin));
                 }
             });
+
+            if(result.Result.Success)
+            {
+                loggerService.LogInformation(LoggerStatic.LogSuccess, result.Token, result.Id, nameof(UserLogin));
+            }
+            else
+            {
+                loggerService.LogWarning(LoggerStatic.LogFail, result.Result, nameof(UserLogin));
+            }
 
             return result;
         }
         #endregion
 
         #region UserCreate
-        [AllowAnonymous]
+        [AllowAnonymous]    
         [Route(nameof(UserCreate))]
         [HttpPost]
-        public async Task<UserModelCreateResult> UserCreate([FromBody] UserModelCreateArgs args)
+        public async Task<UserModelCreateResult> UserCreate([FromBody] UserModelCreateArgs args, [FromServices] ILoggerService loggerService)
         {
+
+            loggerService.LogInformation(LoggerStatic.LogTrigger, nameof(UserCreate));
+
             UserModelCreateResult result = new();
 
             if (args.SecurityTokenKey != Constants.tConstant_SecurityTokenKey)
@@ -58,6 +76,8 @@ namespace TechroseDemo
                 result.Result.Success = false;
                 result.Result.ErrorCode = EnumErrorCodes.ERRORx0001.ToString();
                 result.Result.ErrorDescription = EnumErrorCodes.ERRORx0001.ToDescription();
+
+                loggerService.LogWarning(LoggerStatic.LogFail, result.Result, nameof(UserCreate));
 
                 return result;
             }
@@ -75,8 +95,19 @@ namespace TechroseDemo
                     result.Result.ErrorCode = EnumErrorCodes.ERRORx0001.ToString();
                     result.Result.ErrorDescription = EnumErrorCodes.ERRORx0001.ToDescription();
                     result.Result.ErrorException = Common.ExceptionToString(ex);
+
+                    loggerService.LogError(LoggerStatic.LogException, ex, result.Result, nameof(UserCreate));
                 }
             });
+
+            if (result.Result.Success)
+            {
+                loggerService.LogInformation(LoggerStatic.LogSuccess, nameof(UserCreate));
+            }
+            else
+            {
+                loggerService.LogWarning(LoggerStatic.LogFail, result.Result, nameof(UserCreate));
+            }
 
             return result;
         }
@@ -86,8 +117,11 @@ namespace TechroseDemo
         [Authorize]
         [Route(nameof(TokenCheck))]
         [HttpPost]
-        public async Task<TokenCheckModelResult> TokenCheck([FromBody] TokenCheckModelArgs args)
+        public async Task<TokenCheckModelResult> TokenCheck([FromBody] TokenCheckModelArgs args, [FromServices] ILoggerService loggerService)
         {
+
+            loggerService.LogInformation(LoggerStatic.LogTrigger, nameof(TokenCheck));
+
             TokenCheckModelResult result = new();
 
             await Task.Run(() =>
@@ -106,8 +140,19 @@ namespace TechroseDemo
                     result.Result.ErrorCode = EnumErrorCodes.ERRORx0001.ToString();
                     result.Result.ErrorDescription = EnumErrorCodes.ERRORx0001.ToDescription();
                     result.Result.ErrorException = Common.ExceptionToString(ex);
+
+                    loggerService.LogError(LoggerStatic.LogException, ex, result.Result, nameof(TokenCheck));
                 }
             });
+
+            if (result.Result.Success)
+            {
+                loggerService.LogInformation(LoggerStatic.LogSuccess, nameof(TokenCheck));
+            }
+            else
+            {
+                loggerService.LogWarning(LoggerStatic.LogFail, result.Result, nameof(TokenCheck));
+            }
 
             return result;
         }
@@ -117,8 +162,11 @@ namespace TechroseDemo
         [Authorize]
         [Route(nameof(UserDelete))]
         [HttpDelete]
-        public async Task<UserModelDeleteResult> UserDelete([FromQuery] UserModelDeleteArgs args)
+        public async Task<UserModelDeleteResult> UserDelete([FromQuery] UserModelDeleteArgs args, [FromServices] ILoggerService loggerService)
         {
+
+            loggerService.LogInformation(LoggerStatic.LogTrigger, nameof(UserDelete));
+
             UserModelDeleteResult result = new();
 
             await Task.Run(() =>
@@ -133,8 +181,19 @@ namespace TechroseDemo
                     result.Result.ErrorCode = EnumErrorCodes.ERRORx0001.ToString();
                     result.Result.ErrorDescription = EnumErrorCodes.ERRORx0001.ToDescription();
                     result.Result.ErrorException = Common.ExceptionToString(ex);
+
+                    loggerService.LogError(LoggerStatic.LogException, ex, result.Result, nameof(UserDelete));
                 }
             });
+
+            if (result.Result.Success)
+            {
+                loggerService.LogInformation(LoggerStatic.LogSuccess, nameof(UserDelete));
+            }
+            else
+            {
+                loggerService.LogWarning(LoggerStatic.LogFail, result.Result, nameof(UserDelete));
+            }
 
             return result;
         }

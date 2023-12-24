@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Serilog;
 using TechroseDemo.Repo;
 using static TechroseDemo.Enums;
 
@@ -12,8 +13,11 @@ namespace TechroseDemo
         [Authorize]
         [Route(nameof(NutritionsList))]
         [HttpGet]
-        public async Task<NutritionModelListResult> NutritionsList([FromQuery] NutritionModelListArgs args)
+        public async Task<NutritionModelListResult> NutritionsList([FromQuery] NutritionModelListArgs args, [FromServices] ILoggerService loggerService)
         {
+
+            loggerService.LogInformation(LoggerStatic.LogTrigger, nameof(NutritionsList));
+
             NutritionModelListResult result = new();
 
             await Task.Run(() =>
@@ -27,9 +31,20 @@ namespace TechroseDemo
                     result.Result.Success = false;
                     result.Result.ErrorCode = EnumErrorCodes.ERRORx0001.ToString();
                     result.Result.ErrorDescription = EnumErrorCodes.ERRORx0001.ToDescription();
-                    result.Result.ErrorException = Common.ExceptionToString(ex); 
+                    result.Result.ErrorException = Common.ExceptionToString(ex);
+
+                    loggerService.LogError(LoggerStatic.LogException, ex, result.Result, nameof(NutritionsList));
                 }
             });
+
+            if (result.Result.Success)
+            {
+                loggerService.LogInformation(LoggerStatic.LogSuccess, nameof(NutritionsList));
+            }
+            else
+            {
+                loggerService.LogWarning(LoggerStatic.LogFail, result.Result, nameof(NutritionsList));
+            }
 
             return result;
         }
@@ -38,8 +53,11 @@ namespace TechroseDemo
         [Authorize]
         [Route(nameof(NutritionSearch))]
         [HttpGet]
-        public async Task<NutritionModelSearchResult> NutritionSearch([FromQuery] NutritionModelSearchArgs args)
+        public async Task<NutritionModelSearchResult> NutritionSearch([FromQuery] NutritionModelSearchArgs args, [FromServices] ILoggerService loggerService)
         {
+
+            loggerService.LogInformation(LoggerStatic.LogTrigger, nameof(NutritionSearch));
+
             NutritionModelSearchResult result = new();
 
             await Task.Run(() =>
@@ -54,8 +72,19 @@ namespace TechroseDemo
                     result.Result.ErrorCode = EnumErrorCodes.ERRORx0001.ToString();
                     result.Result.ErrorDescription = EnumErrorCodes.ERRORx0001.ToDescription();
                     result.Result.ErrorException = Common.ExceptionToString(ex);
+
+                    loggerService.LogError(LoggerStatic.LogException, ex, result.Result, nameof(NutritionSearch));
                 }
             });
+
+            if (result.Result.Success)
+            {
+                loggerService.LogInformation(LoggerStatic.LogSuccess, nameof(NutritionSearch));
+            }
+            else
+            {
+                loggerService.LogWarning(LoggerStatic.LogFail, result.Result, nameof(NutritionSearch));
+            }
 
             return result;
         }
