@@ -7,7 +7,7 @@ namespace TechroseDemo
 {
     public partial class BaseController : ControllerBase
     {
-        [Authorize]
+        [AllowAnonymous]
         [Route(nameof(UserNutritionCreate))]
         [HttpPost]
         public async Task<UserNutritionModelCreateResult> UserNutritionCreate([FromBody] UserNutritionModelCreateArgs args)

@@ -34,11 +34,23 @@ namespace TechroseDemo
             #endregion
 
             #region MealOperationsErrorEnums
+            [Description("The blood sugar must be valid!")]
+            ERRORx0698,
+
             [Description("The meal name must be valid!")]
             ERRORx0699,
 
             [Description("The meal time must be valid!")]
             ERRORx0700,
+
+            [Description("The meal id must be valid!")]
+            ERRORx0701,
+
+            [Description("The user nutritions id's must be valid!")]
+            ERRORx0702,
+
+            [Description("The meal not found on records!")]
+            ERRORx0703,
             #endregion
 
             #region UserNutritionOperationsErrorEnums

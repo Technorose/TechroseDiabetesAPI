@@ -68,8 +68,12 @@ namespace TechroseDemo
     {
         public MealModelCreateArgs()
         {
+            BloodSugar = int.MinValue;
             MealNameCode = int.MinValue;
         }
+
+        [JsonPropertyName("blood_sugar")]
+        public int BloodSugar { get; set; }
 
         [JsonPropertyName("meal_name_code")]
         public int MealNameCode { get; set; }
@@ -78,6 +82,31 @@ namespace TechroseDemo
     public class MealModelCreateResult
     {
         public MealModelCreateResult()
+        {
+            Result = new ResultModel();
+        }
+
+        public ResultModel Result { get; set; }
+    }
+
+    public class MealModelUpdateArgs
+    {
+        public MealModelUpdateArgs()
+        {
+            Id = int.MinValue;
+            UserNutritionsIds = new List<int>();
+        }
+
+        [JsonPropertyName("id")]
+        public int Id { get; set; }
+
+        [JsonPropertyName("user_nutritions_ids")]
+        public List<int> UserNutritionsIds { get; set;}
+    }
+
+    public class MealModelUpdateResult
+    {
+        public MealModelUpdateResult()
         {
             Result = new ResultModel();
         }
