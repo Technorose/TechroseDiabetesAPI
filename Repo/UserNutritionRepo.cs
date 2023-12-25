@@ -9,38 +9,7 @@ namespace TechroseDemo
         {
             UserNutritionModelCreateResult result = new();
 
-
-            #pragma warning disable CS8619
-            List<UserNutritionModel> userNutritionsToAdd = args.Select(
-                    arg =>
-                    {
-                        if (arg.UserId.Equals(int.MinValue) || arg.UserId.Equals(null))
-                        {
-                            return null;
-                        }
-
-                        if (arg.NutritionId.Equals(int.MinValue) || arg.NutritionId.Equals(null))
-                        {
-                            return null;
-                        }
-
-                        if (arg.MealId.Equals(int.MinValue) || arg.MealId.Equals(null))
-                        {
-                            return null;
-                        }
-
-                        return new UserNutritionModel()
-                        {
-                            MealId = arg.MealId,
-                            MealModel = arg.MealModel,
-                            NutritionId = arg.NutritionId,
-                            Portion = arg.Portion.Equals(int.MinValue) ? 1 : arg.Portion,
-                            UserId = arg.UserId,
-                            MealTime = arg.MealTime
-                        };
-                    })
-                .Where(model => model != null)
-                .ToList();
+            List<UserNutritionModel> userNutritionsToAdd = Mapper.Map<List<UserNutritionModel>>(args);
 
             if (userNutritionsToAdd.Count != args.Count)
             {

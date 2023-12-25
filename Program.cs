@@ -28,11 +28,11 @@ try
     builder.Services.AddEndpointsApiExplorer();
     builder.Services.AddSwaggerGen();
 
-builder.Services.AddAutoMapper(
-        typeof(UserModel), typeof(UserModelDto)
-    );
+    builder.Services.AddAutoMapper(
+            typeof(UserModel), typeof(UserModelDto),
+            typeof(UserNutritionBaseModel), typeof(UserNutritionModel)
+        );
 
-builder.Services.AddDbContext<ApiDbContext>();
     builder.Services.AddDbContext<ApiDbContext>();
 
     builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
