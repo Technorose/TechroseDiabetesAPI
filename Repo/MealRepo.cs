@@ -121,5 +121,39 @@ namespace TechroseDemo
             return result;
         }
         #endregion
+
+        public MealModelDetailsResult MealDetails(MealModelDetailsArgs args)
+        {
+            MealModelDetailsResult result = new();
+
+            if(args.Id.Equals(null) || args.Id.Equals(int.MinValue))
+            {
+                result.Result.Success = false;
+                result.Result.ErrorCode = EnumErrorCodes.ERRORx0100.ToString();
+                result.Result.ErrorDescription = EnumErrorCodes.ERRORx0100.ToDescription();
+
+                return result;
+            }
+
+            MealModel? meal = DatabaseContext.Meals.FirstOrDefault(
+                m => m.Id == args.Id
+            );
+
+            if(meal == null)
+            {
+                result.Result.Success = false;
+                result.Result.ErrorCode = EnumErrorCodes.ERRORx0704.ToString();
+                result.Result.ErrorDescription = EnumErrorCodes.ERRORx0704.ToDescription();
+
+                return result;
+            }
+
+            result.Meal = meal;
+            result.Result.Success = true;
+            result.Result.ErrorCode = "";
+            result.Result.ErrorDescription = "";
+
+            return result;
+        }
     }
 }

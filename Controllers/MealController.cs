@@ -60,5 +60,30 @@ namespace TechroseDemo
             return result;
         }
         #endregion
+
+        [HttpGet]
+        [Route(nameof(MealDetails))]
+        [Authorize]
+        public async Task<MealModelDetailsResult> MealDetails([FromQuery] MealModelDetailsArgs args)
+        {
+            MealModelDetailsResult result = new();
+
+            await Task.Run(() =>
+            {
+                try
+                {
+                    result = repoInterface.MealDetails(args);
+                }
+                catch(Exception ex)
+                {
+                    result.Result.Success = false;
+                    result.Result.ErrorCode = EnumErrorCodes.ERRORx0001.ToString();
+                    result.Result.ErrorDescription = EnumErrorCodes.ERRORx0001.ToDescription();
+                    result.Result.ErrorException = Common.ExceptionToString(ex);
+                }
+            });
+
+            return result;
+        }
     }
 }

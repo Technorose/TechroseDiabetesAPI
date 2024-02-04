@@ -54,6 +54,9 @@ namespace TechroseDemo
 
             [Description("The meal not found on records!")]
             ERRORx0703,
+
+            [Description("Error Occurred While Getting Meal Details By ID!")]
+            ERRORx0704,
             #endregion
 
             #region UserNutritionOperationsErrorEnums

@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.AspNetCore.Mvc;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text.Json.Serialization;
 
@@ -112,5 +113,28 @@ namespace TechroseDemo
         }
 
         public ResultModel Result { get; set; }
+    }
+
+    public class MealModelDetailsArgs
+    {
+        public MealModelDetailsArgs()
+        {
+            Id = int.MinValue;
+        }
+
+        [FromQuery(Name = "id")]
+        public int Id { get; set; }
+    }
+
+    public class MealModelDetailsResult
+    {
+        public MealModelDetailsResult()
+        {
+            Result = new ResultModel();
+        }
+
+        public ResultModel Result { get; set; }
+
+        public MealModel? Meal { get; set; }
     }
 }

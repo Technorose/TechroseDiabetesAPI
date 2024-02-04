@@ -29,6 +29,8 @@
 
         MealModelUpdateResult MealUpdate(MealModelUpdateArgs args);
 
+        MealModelDetailsResult MealDetails(MealModelDetailsArgs args);
+
         #endregion
 
         #region MealNamesCodesRepo
