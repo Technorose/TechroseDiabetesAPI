@@ -16,6 +16,8 @@
         NutritionModelListResult NutritionsList(NutritionModelListArgs args);
 
         NutritionModelSearchResult NutritionSearch(NutritionModelSearchArgs args);
+
+        NutritionModelDetailsResult NutritionDetails(NutritionModelDetailsArgs args);
         #endregion
 
         #region UserNutritionRepo

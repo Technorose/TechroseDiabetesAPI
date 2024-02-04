@@ -96,12 +96,12 @@ namespace TechroseDemo
                 return result;
             }
 
-            var usrnResult = DatabaseContext.UserNutritions
+            List<UserNutritionsMealUpdateArgs> usrnResult = DatabaseContext.UserNutritions
                 .Where(usrn => usrn.MealId == model.Id)
                 .Join(DatabaseContext.Nutritions,
                       usrn => usrn.NutritionId,
                       nutr => nutr.Id,
-                      (usrn, nutr) => new { UserNutrition = usrn, Nutrition = nutr })
+                      (usrn, nutr) => new UserNutritionsMealUpdateArgs { UserNutrition = usrn, Nutrition = nutr })
                 .ToList(); 
 
             model.TotalCalorie += usrnResult.Sum(entry => Convert.ToDouble(entry.Nutrition.Calories) * entry.UserNutrition.Portion);

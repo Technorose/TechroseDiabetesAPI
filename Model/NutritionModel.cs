@@ -121,6 +121,30 @@ namespace TechroseDemo
         public int Offset { get; set;}
     }
 
+    public class NutritionModelDetailsArgs
+    {
+
+        public NutritionModelDetailsArgs()
+        {
+            Id = int.MinValue;
+        }
+
+        [FromQuery(Name = "id")]
+        public int Id { get; set; }
+    }
+
+    public class NutritionModelDetailsResult
+    {
+        public NutritionModelDetailsResult()
+        {
+            Result = new ResultModel();
+        }
+
+        public ResultModel Result { get; set; }
+
+        public NutritionModel? Nutrition { get; set; }
+    }
+
     public class NutritionModelSearchResult
     {
         public NutritionModelSearchResult()

@@ -76,4 +76,13 @@ namespace TechroseDemo
         public ResultModel Result { get; set; }
     }
     #endregion
+
+    #region ForeignKeysClasses
+    public class UserNutritionsMealUpdateArgs
+    {
+        public required UserNutritionModel UserNutrition;
+
+        public required NutritionModel Nutrition;
+    }
+    #endregion
 }

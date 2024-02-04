@@ -105,6 +105,40 @@ namespace TechroseDemo
 
             return result;
         }
+
+        public NutritionModelDetailsResult NutritionDetails(NutritionModelDetailsArgs args)
+        {
+            NutritionModelDetailsResult result = new();
+
+            if(args.Id.Equals(int.MinValue) || args.Id.Equals(null))
+            {
+                result.Result.Success = false;
+                result.Result.ErrorCode = EnumErrorCodes.ERRORx0100.ToString();
+                result.Result.ErrorDescription = EnumErrorCodes.ERRORx0100.ToDescription();
+
+                return result;
+            }
+
+            NutritionModel? nutrition = DatabaseContext.Nutritions.FirstOrDefault(
+                    n => n.Id == args.Id
+                );
+
+            if(nutrition == null)
+            {
+                result.Result.Success = false;
+                result.Result.ErrorCode = EnumErrorCodes.ERRORx0602.ToString();
+                result.Result.ErrorDescription = EnumErrorCodes.ERRORx0602.ToDescription();
+
+                return result;
+            }
+
+            result.Nutrition = nutrition;
+            result.Result.Success = true;
+            result.Result.ErrorCode = "";
+            result.Result.ErrorDescription = "";
+
+            return result;
+        }
         #endregion
     }
 }

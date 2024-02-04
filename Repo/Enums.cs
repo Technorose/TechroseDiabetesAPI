@@ -31,6 +31,9 @@ namespace TechroseDemo
 
             [Description("Error Occurred While Searching Nutritions!")]
             ERRORx0601,
+
+            [Description("Error Occurred While Getting Details of Nutrition!")]
+            ERRORx0602,
             #endregion
 
             #region MealOperationsErrorEnums
