@@ -13,12 +13,12 @@ namespace TechroseDemo
             #region CheckCredential
             if (args.Limit.Equals(int.MinValue))
             {
-                args.Limit = 10;
+                args.Limit = CoreStaticVars.DefaultLimitValue;
             }
 
             if (args.Offset.Equals(int.MinValue))
             {
-                args.Offset = 0;
+                args.Offset = CoreStaticVars.DefaultOffsetValue;
             }
             #endregion
 
@@ -68,12 +68,12 @@ namespace TechroseDemo
 
             if (args.Limit.Equals(int.MinValue))
             {
-                args.Limit = 10;
+                args.Limit = CoreStaticVars.DefaultLimitValue;
             }
 
             if (args.Offset.Equals(int.MinValue))
             {
-                args.Offset = 0;
+                args.Offset = CoreStaticVars.DefaultOffsetValue;
             }
             #endregion
 

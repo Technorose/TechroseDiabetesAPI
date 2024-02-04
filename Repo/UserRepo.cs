@@ -63,9 +63,7 @@ namespace TechroseDemo
             #endregion
 
             #region Token
-            SymmetricSecurityKey secretKey = new SymmetricSecurityKey(System.Text.Encoding.UTF8.GetBytes(Constants.tConstant_SecretKey));
-
-            SigningCredentials credentials = new SigningCredentials(secretKey, SecurityAlgorithms.HmacSha256);
+            TokenCreateModelArgs tokenCreateModelArgs = new();
 
             Claim[] claims = new[]
             {
@@ -73,21 +71,15 @@ namespace TechroseDemo
                 new Claim(ClaimTypes.Email, userResult.Email)
             };
 
-            JwtSecurityToken token = new JwtSecurityToken(
-                issuer: "*azurewebsites.net",
-                audience: "*azurewebsites.net",
-                claims: claims,
-                expires: DateTime.UtcNow.AddDays(90),
-                signingCredentials: credentials
-            );
+            tokenCreateModelArgs.Claims = claims;
 
-            string tokenString = new JwtSecurityTokenHandler().WriteToken(token);
+            TokenCreateModelResult token = TokenUtility.CreateToken(tokenCreateModelArgs);
             #endregion
 
             #region PreparingResponse
             result.FullName = string.Concat(userResult.FirstName, " ", userResult.LastName);
             result.Id = userResult.Id;
-            result.Token = tokenString;
+            result.Token = token.Token;
             result.Result.Success = true;
             result.Result.ErrorCode = "";
             result.Result.ErrorDescription = "";
@@ -197,7 +189,7 @@ namespace TechroseDemo
                 Email = args.Email,
                 PhoneNumber = args.PhoneNumber,
                 Weight = args.Weight,
-                TotalDoseValue = args.Weight * 0.55,
+                TotalDoseValue = args.Weight * CoreStaticVars.TotalDoseCoefficient,
                 BloodSugarValue = args.BloodSugarValue
             };
             #endregion
@@ -266,12 +258,12 @@ namespace TechroseDemo
             #region CheckCredential
             if (args.Limit.Equals(int.MinValue))
             {
-                args.Limit = 10;
+                args.Limit = CoreStaticVars.DefaultLimitValue;
             }
 
             if (args.Offset.Equals(int.MinValue))
             {
-                args.Offset = 0;
+                args.Offset = CoreStaticVars.DefaultOffsetValue;
             }
             #endregion
 

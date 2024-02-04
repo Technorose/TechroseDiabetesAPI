@@ -13,12 +13,12 @@ namespace TechroseDemo
 
             if (args.Take.Equals(int.MinValue))
             {
-                args.Take = 10;
+                args.Take = CoreStaticVars.DefaultLimitValue;
             }
 
             if (args.Skip.Equals(int.MinValue))
             {
-                args.Skip = 0;
+                args.Skip = CoreStaticVars.DefaultOffsetValue;
             }
 
             List<MealNamesCodesModel> query = DatabaseContext.MealNamesCodes
