@@ -196,4 +196,33 @@ namespace TechroseDemo
         [JsonPropertyName("result")]
         public ResultModel Result { get; set; }
     }
+
+    public class UserModelUpdatePasswordArgs
+    {
+        public UserModelUpdatePasswordArgs()
+        {
+            OldPassword = string.Empty;
+            NewPassword = string.Empty;
+            ConfirmPassword = string.Empty;
+        }
+
+        [JsonPropertyName("old_password")]
+        public string OldPassword { get; set; }
+
+        [JsonPropertyName("new_password")]
+        public string NewPassword { get; set; }
+
+        [JsonPropertyName("confirm_password")]
+        public string ConfirmPassword { get; set;}
+    }
+
+    public class UserModelUpdatePasswordResult
+    {
+        public UserModelUpdatePasswordResult()
+        {
+            Result = new ResultModel();
+        }
+
+        public ResultModel Result { get; set; }
+    }
 }

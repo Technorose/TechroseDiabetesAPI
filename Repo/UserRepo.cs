@@ -64,8 +64,8 @@ namespace TechroseDemo
 
             Claim[] claims = new[]
             {
-                new Claim(ClaimTypes.Name, string.Concat(userResult.FirstName, " ", userResult.LastName)),
-                new Claim(ClaimTypes.Email, userResult.Email)
+                new Claim(CoreStaticVars.ClaimTypeFullName, string.Concat(userResult.FirstName, " ", userResult.LastName)),
+                new Claim(CoreStaticVars.ClaimTypeEmail, userResult.Email)
             };
 
             tokenCreateModelArgs.Claims = claims;
@@ -292,6 +292,108 @@ namespace TechroseDemo
             return result;
         }
         #endregion
+        #endregion
+
+        #region UserUpdatePassword
+        public UserModelUpdatePasswordResult UserUpdatePassword(UserModelUpdatePasswordArgs args, HeaderModelArgs headers)
+        {
+            UserModelUpdatePasswordResult result = new();
+
+            if(headers.Authorization.Equals(null) || headers.Authorization.Trim().Equals(""))
+            {
+                result.Result.Success = false;
+                result.Result.ErrorCode = EnumErrorCodes.ERRORx0100.ToString();
+                result.Result.ErrorDescription = EnumErrorCodes.ERRORx0100.ToDescription();
+
+                return result;
+            }
+
+            if (args.OldPassword.Equals(null) || args.OldPassword.Trim().Equals(""))
+            {
+                result.Result.Success = false;
+                result.Result.ErrorCode = EnumErrorCodes.ERRORx0100.ToString();
+                result.Result.ErrorDescription = EnumErrorCodes.ERRORx0100.ToDescription();
+
+                return result;
+            }
+
+            if (args.NewPassword.Equals(null) || args.NewPassword.Trim().Equals(""))
+            {
+                result.Result.Success = false;
+                result.Result.ErrorCode = EnumErrorCodes.ERRORx0100.ToString();
+                result.Result.ErrorDescription = EnumErrorCodes.ERRORx0100.ToDescription();
+
+                return result;
+            }
+
+            if (args.ConfirmPassword.Equals(null) || args.ConfirmPassword.Trim().Equals(""))
+            {
+                result.Result.Success = false;
+                result.Result.ErrorCode = EnumErrorCodes.ERRORx0100.ToString();
+                result.Result.ErrorDescription = EnumErrorCodes.ERRORx0100.ToDescription();
+
+                return result;
+            }
+
+            if (!args.NewPassword.Equals(args.ConfirmPassword) || args.NewPassword.Equals(args.OldPassword))
+            {
+                result.Result.Success = false;
+                result.Result.ErrorCode = EnumErrorCodes.ERRORx0100.ToString();
+                result.Result.ErrorDescription = EnumErrorCodes.ERRORx0100.ToDescription();
+
+                return result;
+            }
+
+            TokenDecodeModelArgs tokenDecodeModelArgs = new TokenDecodeModelArgs();
+            tokenDecodeModelArgs.AuthorizationToken = headers.Authorization;
+
+            TokenDecodeModelResult tokenDecodeModelResult = TokenUtility.DecodeToken(tokenDecodeModelArgs);
+            
+            string? email = tokenDecodeModelResult.Claims.GetValueOrDefault(CoreStaticVars.ClaimTypeEmail);
+
+            UserModel? user = DatabaseContext.Users.SingleOrDefault(
+                u => u.Email == email
+            );
+
+            if(user == null)
+            {
+                result.Result.Success = false;
+                result.Result.ErrorCode = EnumErrorCodes.ERRORx0401.ToString();
+                result.Result.ErrorDescription = EnumErrorCodes.ERRORx0401.ToDescription();
+
+                return result;
+            }
+
+            PasswordHashModel passwordHashModel = new PasswordHashModel();
+
+            passwordHashModel.PasswordToHash = args.OldPassword;
+            passwordHashModel.HashedPassword = user.HashedPassword;
+            passwordHashModel.Salt = user.SaltedPassword;
+
+            bool ok = PasswordHashing.PasswordHashCheck(passwordHashModel);
+            if(!ok)
+            {
+                result.Result.Success = false;
+                result.Result.ErrorCode = EnumErrorCodes.ERRORx0400.ToString();
+                result.Result.ErrorDescription = EnumErrorCodes.ERRORx0400.ToDescription();
+
+                return result;
+            }
+
+            PasswordHashModel passwordHashToModel = PasswordHashing.PasswordHash(args.NewPassword);
+
+            user.HashedPassword = passwordHashToModel.HashedPassword;
+            user.SaltedPassword = passwordHashToModel.Salt;
+
+            DatabaseContext.Users.Update(user);
+            DatabaseContext.SaveChanges();
+
+            result.Result.Success = true;
+            result.Result.ErrorCode = "";
+            result.Result.ErrorDescription = "";
+
+            return result;
+        }
         #endregion
     }
 }

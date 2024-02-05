@@ -225,6 +225,33 @@ namespace TechroseDemo
             return result;
         }
         #endregion
+
+        #region UserUpdatePassword
+        [HttpPut]
+        [Authorize]
+        [Route(nameof(UserUpdatePassword))]
+        public async Task<UserModelUpdatePasswordResult> UserUpdatePassword([FromBody] UserModelUpdatePasswordArgs args, [FromHeader] HeaderModelArgs headers)
+        {
+            UserModelUpdatePasswordResult result = new();
+
+            await Task.Run(() =>
+            {
+                try
+                {
+                    result = repoInterface.UserUpdatePassword(args, headers);
+                }
+                catch(Exception ex)
+                {
+                    result.Result.Success = false;
+                    result.Result.ErrorCode = EnumErrorCodes.ERRORx0001.ToString();
+                    result.Result.ErrorDescription = EnumErrorCodes.ERRORx0001.ToDescription();
+                    result.Result.ErrorException = Common.ExceptionToString(ex);
+                }
+            });
+
+            return result;
+        }
+        #endregion
         #endregion
     }
 }

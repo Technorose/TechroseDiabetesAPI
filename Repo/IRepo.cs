@@ -10,6 +10,8 @@
         UserModelDeleteResult UserDelete(UserModelDeleteArgs args);
 
         UserModelListResult UserList(UserModelListArgs args);
+
+        UserModelUpdatePasswordResult UserUpdatePassword(UserModelUpdatePasswordArgs args, HeaderModelArgs headers);
         #endregion
 
         #region NutritionRepo
