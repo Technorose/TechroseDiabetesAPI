@@ -2,6 +2,7 @@
 using Microsoft.IdentityModel.Tokens;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Diagnostics.CodeAnalysis;
 using System.Runtime.Serialization;
 using System.Text.Json.Serialization;
 
@@ -152,17 +153,13 @@ namespace TechroseDemo
     {
         public UserModelLoginResult()
         {
-            Id = int.MinValue;
-            FullName = string.Empty;
             Token = string.Empty;
             Result = new ResultModel();
         }
 
-        [JsonPropertyName("id")]
-        public int Id { get; set; }
-
-        [JsonPropertyName("full_name")]
-        public string FullName { get; set; }
+        [JsonPropertyName("user")]
+        [AllowNull]
+        public UserModelDto User { get; set; }
 
         [JsonPropertyName("token")]
         public string Token { get; set; }

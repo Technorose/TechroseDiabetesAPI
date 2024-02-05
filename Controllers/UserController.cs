@@ -49,7 +49,7 @@ namespace TechroseDemo
 
             if(result.Result.Success)
             {
-                loggerService.LogInformation(LoggerStatic.LogSuccess, result.Token, result.Id, nameof(UserLogin));
+                loggerService.LogInformation(LoggerStatic.LogSuccess, result.Token, result.User.Id, nameof(UserLogin));
             }
             else
             {

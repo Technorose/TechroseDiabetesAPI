@@ -1,9 +1,6 @@
 ﻿using TechroseDemo.Repo;
 using static TechroseDemo.Enums;
-using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
-using Microsoft.IdentityModel.Tokens;
-using System;
 
 namespace TechroseDemo
 {
@@ -77,8 +74,7 @@ namespace TechroseDemo
             #endregion
 
             #region PreparingResponse
-            result.FullName = string.Concat(userResult.FirstName, " ", userResult.LastName);
-            result.Id = userResult.Id;
+            result.User = Mapper.Map<UserModelDto>(userResult);
             result.Token = token.Token;
             result.Result.Success = true;
             result.Result.ErrorCode = "";
