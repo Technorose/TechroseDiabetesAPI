@@ -23,31 +23,38 @@ namespace TechroseDemo
 
         [Column("first_name")]
         [JsonPropertyName("first_name")]
-        public required string FirstName { get; set; }
+        [Required]
+        public string FirstName { get; set; }
 
         [Column("last_name")]
         [JsonPropertyName("last_name")]
-        public required string LastName { get; set; }
+        [Required]
+        public string LastName { get; set; }
 
         [Column("email")]
         [JsonPropertyName("email")]
-        public required string Email { get; set; }
+        [Required]
+        public string Email { get; set; }
 
         [Column("phone_number")]
         [JsonPropertyName("phone_number")]
-        public required string PhoneNumber { get; set; }
+        [Required]
+        public string PhoneNumber { get; set; }
 
         [Column("weight")]
         [JsonPropertyName("weight")]
-        public required double Weight { get; set; }
+        [Required]
+        public double Weight { get; set; }
 
         [Column("blood_sugar_value")]
         [JsonPropertyName("blood_sugar_value")]
-        public required double BloodSugarValue { get; set; }
+        [Required]
+        public double BloodSugarValue { get; set; }
 
         [Column("birth_date")]
         [JsonPropertyName("birth_date")]
-        public required DateTime BirthDate { get; set;}
+        [Required]
+        public DateTime BirthDate { get; set;}
     }
 
     [Table("users")]
@@ -59,14 +66,17 @@ namespace TechroseDemo
         public int Id { get; set; }
 
         [Column("hashed_password")]
-        public required string HashedPassword { get; set; }
+        [Required]
+        public string? HashedPassword { get; set; }
 
         [Column("salted_password")]
-        public required string SaltedPassword { get; set; }
+        [Required]
+        public string? SaltedPassword { get; set; }
 
         [Column("total_dose_value")]
         [JsonPropertyName("total_dose_value")]
-        public required double TotalDoseValue { get; set; }
+        [Required]
+        public double TotalDoseValue { get; set; }
 
         [JsonIgnore]
         public virtual ICollection<UserNutritionModel>? UserNutritionModels { get; set; }
@@ -81,7 +91,8 @@ namespace TechroseDemo
 
         [Column("total_dose_value")]
         [JsonPropertyName("total_dose_value")]
-        public required double TotalDoseValue { get; set; }
+        [Required]
+        public double TotalDoseValue { get; set; }
     }
 
     public class UserModelDeleteArgs
@@ -128,6 +139,7 @@ namespace TechroseDemo
         }
 
         public ResultModel Result { get; set; }
+       
     }
 
     public class UserModelLoginArgs
