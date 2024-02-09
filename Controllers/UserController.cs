@@ -253,5 +253,35 @@ namespace TechroseDemo
         }
         #endregion
         #endregion
+
+        #region UserModelDetails
+        [HttpGet]
+        [Route(nameof(UserDetails))]
+        [Authorize]
+        public async Task<UserModelDetailsResult> UserDetails([FromQuery] UserModelDetailsArgs args)
+
+        {
+            UserModelDetailsResult result = new();
+
+            await Task.Run(() =>
+            {
+                try
+                {
+                    result = repoInterface.UserDetails(args);
+                }
+
+                catch (Exception ex)
+                {
+                    result.Result.Success = false;
+                    result.Result.ErrorCode = EnumErrorCodes.ERRORx0001.ToString();
+                    result.Result.ErrorDescription = EnumErrorCodes.ERRORx0001.ToDescription();
+                    result.Result.ErrorException = Common.ExceptionToString(ex);
+                }
+            });
+
+            return result;
+        }
+        #endregion
     }
+
 }

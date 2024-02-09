@@ -1,6 +1,8 @@
 ﻿using TechroseDemo.Repo;
 using static TechroseDemo.Enums;
 using System.Security.Claims;
+using Microsoft.AspNetCore.Mvc;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace TechroseDemo
 {
@@ -395,5 +397,39 @@ namespace TechroseDemo
             return result;
         }
         #endregion
+
+        #region UserModelDetails
+        public UserModelDetailsResult UserDetails(UserModelDetailsArgs args)
+        {
+            UserModelDetailsResult result = new();
+
+            if (args.Id.Equals(null) || args.Id.Equals(int.MinValue))
+            {
+                result.Result.Success = false;
+                result.Result.ErrorCode = EnumErrorCodes.ERRORx0100.ToString();
+                result.Result.ErrorDescription = EnumErrorCodes.ERRORx0100.ToDescription();
+
+                return result;
+            }
+
+            UserModel? user = DatabaseContext.Users.FirstOrDefault(user => user.Id == args.Id);
+
+            if (user == null)
+            {
+                result.Result.Success = false;
+                result.Result.ErrorCode = EnumErrorCodes.ERRORx0402.ToString();
+                result.Result.ErrorDescription = EnumErrorCodes.ERRORx0402.ToDescription();
+                return result;
+            }
+
+            result.User = Mapper.Map<UserModelDto>(user); 
+            result.Result.Success = true;
+            result.Result.ErrorCode = "";
+            result.Result.ErrorDescription = "";
+
+            return result;
+        }
+        #endregion
     }
+
 }

@@ -237,4 +237,26 @@ namespace TechroseDemo
 
         public ResultModel Result { get; set; }
     }
+
+    public class UserModelDetailsArgs
+    {
+        public UserModelDetailsArgs()
+        {
+            Id = int.MinValue;
+        }
+
+        [FromQuery(Name = "id")]
+        public int Id { get; set; }
+    }
+
+    public class UserModelDetailsResult
+    {
+        public UserModelDetailsResult()
+        {
+            Result = new ResultModel();
+        }
+        public ResultModel Result { get; set; }
+        public UserModelDto? User { get; set; }
+        
+    }
 }

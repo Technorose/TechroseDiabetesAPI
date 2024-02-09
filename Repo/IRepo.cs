@@ -12,6 +12,7 @@
         UserModelListResult UserList(UserModelListArgs args);
 
         UserModelUpdatePasswordResult UserUpdatePassword(UserModelUpdatePasswordArgs args, HeaderModelArgs headers);
+        UserModelDetailsResult UserDetails(UserModelDetailsArgs args);
         #endregion
 
         #region NutritionRepo
