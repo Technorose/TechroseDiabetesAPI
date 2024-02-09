@@ -23,6 +23,9 @@ namespace TechroseDemo
 
             [Description("Incorrect Password!")]
             ERRORx0400,
+
+            [Description("Error Occurred While Getting User Details By ID")]
+            ERRORx0402,
             #endregion
 
             #region NutritionsOperationsErrorEnums

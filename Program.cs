@@ -14,7 +14,10 @@ using Serilog.Events;
 var builder = WebApplication.CreateBuilder(args);
 
 Log.Logger = new LoggerConfiguration()
-    .ReadFrom.Configuration(builder.Configuration)
+    .ReadFrom.Configuration(new ConfigurationBuilder()
+        .SetBasePath(Directory.GetCurrentDirectory())  
+        .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+        .Build())
     .Enrich.FromLogContext()
     .CreateLogger();
 
