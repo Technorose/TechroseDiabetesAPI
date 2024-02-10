@@ -18,7 +18,6 @@ namespace TechroseDemo
             Calorie = long.MinValue;
             Sugar = long.MinValue;
             Carbohydrate = long.MinValue;
-            Category = string.Empty;
             Image = string.Empty;
         }
 
@@ -42,10 +41,6 @@ namespace TechroseDemo
         [JsonPropertyName("carbo_hydrate")]
         public required long Carbohydrate { get; set;}
 
-        [Column("category")]
-        [JsonPropertyName("category")]
-        public required string Category { get; set; }
-
         [Column("image")]
         [JsonPropertyName("image")]
         public required string Image { get; set; }
@@ -64,6 +59,14 @@ namespace TechroseDemo
         [Column("id")]
         public long Id { get; set; }
 
+        [Column("nutrition_type_id")]
+        [JsonPropertyName("nutrition_type_id")]
+        [ForeignKey(nameof(NutritionTypeModels))]
+        public required int NutritionTypeId { get; set; }
+
+        [JsonIgnore]
+        public virtual NutritionTypeModel? NutritionTypeModels { get; set; }
+
         [JsonIgnore]
         public virtual ICollection<UserNutritionModel>? UserNutritionModels { get; set; }
     }
@@ -73,12 +76,16 @@ namespace TechroseDemo
         public NutritionModelDto()
         {
             Id = long.MinValue;
+            NutritionType = new NutritionTypeModel();
         }
 
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [Column("id")]
         public long Id { get; set; }
+
+        [JsonPropertyName("nutrition_type")]
+        public NutritionTypeModel NutritionType { get; set; }
     }
 
     public class NutritionModelListArgs

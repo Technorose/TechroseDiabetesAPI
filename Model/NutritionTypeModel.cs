@@ -29,6 +29,9 @@ namespace TechroseDemo
         [Column("id")]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
+
+        [JsonIgnore]
+        public virtual ICollection<NutritionModel>? NutritionModels { get; set; }
     }
 
     public class NutritionTypeListModelArgs

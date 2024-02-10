@@ -21,7 +21,7 @@ namespace TechroseDemo
                 args.Offset = CoreStaticVars.DefaultOffsetValue;
             }
             #endregion
-
+            #pragma warning disable CS8601 // Possible null reference assignment.
             #region TakeListFromDatabase
             List<NutritionModelDto> query = DatabaseContext.Nutritions
                 .OrderBy(n => n.Id)
@@ -31,7 +31,7 @@ namespace TechroseDemo
                     Name = n.Name,
                     Calorie = n.Calorie,
                     Carbohydrate = n.Carbohydrate,
-                    Category = n.Category,
+                    NutritionType = n.NutritionTypeModels,
                     ServingSize = n.ServingSize,
                     Sugar = n.Sugar,
                     Image = googleCloudStorage.GenerateDownloadImageUrl(new GenerateDownloadImageUrlArgs() { FileName = n.Image})
@@ -88,7 +88,7 @@ namespace TechroseDemo
                 args.Offset = CoreStaticVars.DefaultOffsetValue;
             }
             #endregion
-
+            #pragma warning disable CS8601 // Possible null reference assignment.
             #region SearchingOnTable
             List<NutritionModelDto> query = DatabaseContext.Nutritions
                 .OrderBy(n => n.Id)
@@ -99,7 +99,7 @@ namespace TechroseDemo
                     Name = n.Name,
                     Calorie = n.Calorie,
                     Carbohydrate = n.Carbohydrate,
-                    Category = n.Category,
+                    NutritionType = n.NutritionTypeModels,
                     ServingSize = n.ServingSize,
                     Sugar = n.Sugar,
                     Image = googleCloudStorage.GenerateDownloadImageUrl(new GenerateDownloadImageUrlArgs() { FileName = n.Image })
@@ -143,6 +143,7 @@ namespace TechroseDemo
                 return result;
             }
 
+            #pragma warning disable CS8601 // Possible null reference assignment.
             NutritionModelDto? nutrition = DatabaseContext.Nutritions
                 .Select(n => new NutritionModelDto
                 {
@@ -150,7 +151,7 @@ namespace TechroseDemo
                     Name = n.Name,
                     Calorie = n.Calorie,
                     Carbohydrate = n.Carbohydrate,
-                    Category = n.Category,
+                    NutritionType = n.NutritionTypeModels,
                     ServingSize = n.ServingSize,
                     Sugar = n.Sugar,
                     Image = googleCloudStorage.GenerateDownloadImageUrl(new GenerateDownloadImageUrlArgs()
@@ -162,7 +163,7 @@ namespace TechroseDemo
                     n => n.Id == args.Id
                 );
 
-            if(nutrition == null)
+            if (nutrition == null)
             {
                 result.Result.Success = false;
                 result.Result.ErrorCode = EnumErrorCodes.ERRORx0602.ToString();
