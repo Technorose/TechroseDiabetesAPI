@@ -25,5 +25,7 @@ namespace TechroseDemo
         public DbSet<UserNutritionModel> UserNutritions { get; set; }
 
         public DbSet<MealNamesCodesModel> MealNamesCodes { get; set;}
+
+        public DbSet<NutritionTypeModel> NutritionTypes { get; set;}
     }
 }

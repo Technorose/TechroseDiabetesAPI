@@ -81,7 +81,12 @@ namespace TechroseDemo
 
             #region MealNamesCodesOperationsErrorEnums
             [Description("Error Occurred While Getting Meal Names Codes List!")]
-            ERRORx0995
+            ERRORx0995,
+            #endregion
+
+            #region NutritionTypeErrorEnums
+            [Description("Error Occurred While Getting Nutrition Type List")]
+            ERRORx1000,
             #endregion
         }
 

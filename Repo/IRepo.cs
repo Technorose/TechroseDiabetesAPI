@@ -39,5 +39,9 @@
         #region MealNamesCodesRepo
         MealNamesCodesModelListResult MealNamesCodesList(MealNamesCodesModelListArgs args);
         #endregion
+
+        #region NutritionTypeRepo
+        NutritionTypeListModelResult NutritionTypeList(NutritionTypeListModelArgs args);
+        #endregion
     }
 }
