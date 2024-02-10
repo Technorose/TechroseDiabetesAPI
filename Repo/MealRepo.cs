@@ -104,11 +104,11 @@ namespace TechroseDemo
                       (usrn, nutr) => new UserNutritionsMealUpdateArgs { UserNutrition = usrn, Nutrition = nutr })
                 .ToList(); 
 
-            model.TotalCalorie += usrnResult.Sum(entry => Convert.ToDouble(entry.Nutrition.Calories) * entry.UserNutrition.Portion);
+            model.TotalCalorie += usrnResult.Sum(entry => Convert.ToDouble(entry.Nutrition.Calorie) * entry.UserNutrition.Portion);
 
-            model.TotalCarbohydrate += usrnResult.Sum(entry => Convert.ToDouble(entry.Nutrition.Carbohydrate.Split(' ').Length > 0 ? entry.Nutrition.Carbohydrate.Split(' ')[0] : entry.Nutrition.Carbohydrate) * entry.UserNutrition.Portion);
+            model.TotalCarbohydrate += usrnResult.Sum(entry => Convert.ToDouble(entry.Nutrition.Carbohydrate) * entry.UserNutrition.Portion);
 
-            model.TotalSugar += usrnResult.Sum(entry => Convert.ToDouble(entry.Nutrition.Sugars.Split(' ').Length > 0 ? entry.Nutrition.Sugars.Split(' ')[0] : entry.Nutrition.Sugars) * entry.UserNutrition.Portion);
+            model.TotalSugar += usrnResult.Sum(entry => Convert.ToDouble(entry.Nutrition.Sugar) * entry.UserNutrition.Portion);
 
 
             DatabaseContext.Meals.Update(model);

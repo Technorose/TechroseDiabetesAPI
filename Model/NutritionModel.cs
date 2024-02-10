@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Query.SqlExpressions;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Drawing;
 using System.Numerics;
 using System.Text.Json.Serialization;
 
@@ -13,13 +14,12 @@ namespace TechroseDemo
         public NutritionBaseModel()
         {
             Name = string.Empty;
-            ServingSize = string.Empty;
-            Calories = long.MinValue;
-            TotalFat = string.Empty;
-            Cholesterol = string.Empty;
-            Caffeine = string.Empty;
-            Sugars = string.Empty;
-            Carbohydrate = string.Empty;
+            ServingSize = long.MinValue;
+            Calorie = long.MinValue;
+            Sugar = long.MinValue;
+            Carbohydrate = long.MinValue;
+            Category = string.Empty;
+            Image = string.Empty;
         }
 
         [Column("name")]
@@ -28,31 +28,27 @@ namespace TechroseDemo
 
         [Column("serving_size")]
         [JsonPropertyName("serving_size")]
-        public required string ServingSize { get; set; }
+        public required long ServingSize { get; set; }
 
-        [Column("calories")]
-        [JsonPropertyName("calories")]
-        public required long Calories { get; set; }
+        [Column("calorie")]
+        [JsonPropertyName("calorie")]
+        public required long Calorie { get; set; }
 
-        [Column("total_fat")]
-        [JsonPropertyName("total_fat")]
-        public required string TotalFat { get; set; }
+        [Column("sugar")]
+        [JsonPropertyName("sugar")]
+        public required long Sugar { get; set;}
 
-        [Column("cholesterol")]
-        [JsonPropertyName("cholesterol")]
-        public required string Cholesterol { get; set;}
+        [Column("carbo_hydrate")]
+        [JsonPropertyName("carbo_hydrate")]
+        public required long Carbohydrate { get; set;}
 
-        [Column("caffeine")]
-        [JsonPropertyName("caffeine")]
-        public required string Caffeine { get; set;}
+        [Column("category")]
+        [JsonPropertyName("category")]
+        public required string Category { get; set; }
 
-        [Column("sugars")]
-        [JsonPropertyName("sugars")]
-        public required string Sugars { get; set;}
-
-        [Column("carbohydrate")]
-        [JsonPropertyName("carbohydrate")]
-        public required string Carbohydrate { get; set;}
+        [Column("image")]
+        [JsonPropertyName("image")]
+        public required string Image { get; set; }
     }
 
     [Table("nutritions")]
@@ -60,13 +56,13 @@ namespace TechroseDemo
     {
         public NutritionModel()
         {
-            Id = int.MinValue;
+            Id = long.MinValue;
         }
 
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [Column("id")]
-        public int Id { get; set; }
+        public long Id { get; set; }
 
         [JsonIgnore]
         public virtual ICollection<UserNutritionModel>? UserNutritionModels { get; set; }
