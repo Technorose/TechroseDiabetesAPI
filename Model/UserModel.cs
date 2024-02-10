@@ -60,6 +60,12 @@ namespace TechroseDemo
     [Table("users")]
     public class UserModel : UserBaseModel
     {
+        public UserModel()
+        {
+            HashedPassword = string.Empty;
+            SaltedPassword = string.Empty;
+        }
+
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [Column("id")]
@@ -67,11 +73,11 @@ namespace TechroseDemo
 
         [Column("hashed_password")]
         [Required]
-        public string? HashedPassword { get; set; }
+        public string HashedPassword { get; set; }
 
         [Column("salted_password")]
         [Required]
-        public string? SaltedPassword { get; set; }
+        public string SaltedPassword { get; set; }
 
         [Column("total_dose_value")]
         [JsonPropertyName("total_dose_value")]

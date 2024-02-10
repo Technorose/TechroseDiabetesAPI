@@ -90,11 +90,23 @@ namespace TechroseDemo
             #endregion
 
             #region SearchingOnTable
-            IQueryable<NutritionModel> query = DatabaseContext.Nutritions
+            List<NutritionModelDto> query = DatabaseContext.Nutritions
                 .OrderBy(n => n.Id)
                 .Where(n => n.Name.Contains(args.SearchArgument))
+                .Select(n => new NutritionModelDto
+                {
+                    Id = n.Id,
+                    Name = n.Name,
+                    Calorie = n.Calorie,
+                    Carbohydrate = n.Carbohydrate,
+                    Category = n.Category,
+                    ServingSize = n.ServingSize,
+                    Sugar = n.Sugar,
+                    Image = googleCloudStorage.GenerateDownloadImageUrl(new GenerateDownloadImageUrlArgs() { FileName = n.Image })
+                })
                 .Skip(args.Offset)
-                .Take(args.Limit);
+                .Take(args.Limit)
+                .ToList();
             #endregion
 
             #region CheckQuery
@@ -109,7 +121,7 @@ namespace TechroseDemo
             #endregion
 
             #region PreparingResponse
-            result.Nutritions = [.. query];
+            result.Nutritions = query;
             result.Result.Success = true;
             result.Result.ErrorCode = "";
             result.Result.ErrorDescription = "";
@@ -131,7 +143,22 @@ namespace TechroseDemo
                 return result;
             }
 
-            NutritionModel? nutrition = DatabaseContext.Nutritions.FirstOrDefault(
+            NutritionModelDto? nutrition = DatabaseContext.Nutritions
+                .Select(n => new NutritionModelDto
+                {
+                    Id = n.Id,
+                    Name = n.Name,
+                    Calorie = n.Calorie,
+                    Carbohydrate = n.Carbohydrate,
+                    Category = n.Category,
+                    ServingSize = n.ServingSize,
+                    Sugar = n.Sugar,
+                    Image = googleCloudStorage.GenerateDownloadImageUrl(new GenerateDownloadImageUrlArgs()
+                    {
+                        FileName = n.Image
+                    })
+                })
+                .FirstOrDefault(
                     n => n.Id == args.Id
                 );
 

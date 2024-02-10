@@ -151,19 +151,19 @@ namespace TechroseDemo
 
         public ResultModel Result { get; set; }
 
-        public NutritionModel? Nutrition { get; set; }
+        public NutritionModelDto? Nutrition { get; set; }
     }
 
     public class NutritionModelSearchResult
     {
         public NutritionModelSearchResult()
         {
-            Nutritions = new List<NutritionModel>();
+            Nutritions = new List<NutritionModelDto>();
             Result = new ResultModel();
         }
 
         [JsonPropertyName("nutritions")]
-        public List<NutritionModel> Nutritions { get; set; }
+        public List<NutritionModelDto> Nutritions { get; set; }
 
         public ResultModel Result { get; set; }
     }
