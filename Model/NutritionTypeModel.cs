@@ -10,21 +10,25 @@ namespace TechroseDemo
         public NutritionTypeBaseModel()
         {
             NutritionTypeName = string.Empty;
+            Image = string.Empty;
         }
 
         [JsonPropertyName("nutrition_type_name")]
         [Column("nutrition_type_name")]
         public string NutritionTypeName { get; set; }
+
+        [JsonPropertyName("image")]
+        [Column("image")]
+        public string Image { get; set; }
     }
 
     [Table("nutrition_types")]
-    public class NutritionTypeModel
+    public class NutritionTypeModel : NutritionTypeBaseModel
     {
         [Key]
         [Column("id")]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
-
     }
 
     public class NutritionTypeListModelArgs

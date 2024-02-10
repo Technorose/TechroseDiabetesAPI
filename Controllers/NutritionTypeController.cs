@@ -8,9 +8,9 @@ namespace TechroseDemo
     public partial class BaseController : ControllerBase 
     {
         [HttpGet]
-        [AllowAnonymous]
+        [Authorize]
         [Route(nameof(NutritionTypeList))]
-        public async Task<NutritionTypeListModelResult> NutritionTypeList([FromBody] NutritionTypeListModelArgs args)
+        public async Task<NutritionTypeListModelResult> NutritionTypeList([FromQuery] NutritionTypeListModelArgs args)
         {
             NutritionTypeListModelResult result = new();
 

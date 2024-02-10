@@ -21,7 +21,16 @@ namespace TechroseDemo
             }
 
             List<NutritionTypeModel> nutritionTypes = DatabaseContext.NutritionTypes
-                .OrderBy(n => n.Id) 
+                .OrderBy(n => n.Id)
+                .Select(nt => new NutritionTypeModel
+                {
+                    Id = nt.Id,
+                    NutritionTypeName = nt.NutritionTypeName,
+                    Image = googleCloudStorage.GenerateDownloadImageUrl(new GenerateDownloadImageUrlArgs()
+                    {
+                        FileName = nt.Image,
+                    })
+                })
                 .Skip(args.Skip)
                 .Take(args.Take)
                 .ToList();
