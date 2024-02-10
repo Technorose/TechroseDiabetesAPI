@@ -12,6 +12,7 @@
 
 
         public readonly static string ClaimTypeEmail = "email";
+
         public readonly static string ClaimTypeFullName = "full_name";
     }
 }

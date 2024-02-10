@@ -18,9 +18,9 @@ namespace TechroseDemo
             _bucketName = configuration.GetValue<string>("googleCredential:bucketName");
         }
 
-        public string GenerateDownloadImageUrl(string folderName, string fileName)
+        public string GenerateDownloadImageUrl(GenerateDownloadImageUrlArgs args)
         {
-            return $"https://storage.googleapis.com/{_bucketName}/{folderName}/{fileName}";
+            return $"https://storage.googleapis.com/{_bucketName}/{args.FileName}";
         }
     }
 }

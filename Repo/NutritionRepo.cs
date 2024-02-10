@@ -23,10 +23,22 @@ namespace TechroseDemo
             #endregion
 
             #region TakeListFromDatabase
-            IQueryable<NutritionModel> query = DatabaseContext.Nutritions
+            List<NutritionModelDto> query = DatabaseContext.Nutritions
                 .OrderBy(n => n.Id)
+                .Select(n => new NutritionModelDto
+                {
+                    Id = n.Id,
+                    Name = n.Name,
+                    Calorie = n.Calorie,
+                    Carbohydrate = n.Carbohydrate,
+                    Category = n.Category,
+                    ServingSize = n.ServingSize,
+                    Sugar = n.Sugar,
+                    Image = googleCloudStorage.GenerateDownloadImageUrl(new GenerateDownloadImageUrlArgs() { FileName = n.Image})
+                })
                 .Skip(args.Offset)
-                .Take(args.Limit);
+                .Take(args.Limit)
+                .ToList();
             #endregion
 
             #region CheckList
@@ -41,7 +53,7 @@ namespace TechroseDemo
             #endregion
 
             #region PreparingToResult
-            result.Nutritions = [.. query];
+            result.Nutritions = query;
             result.Result.Success = true;
             result.Result.ErrorCode = "";
             result.Result.ErrorDescription = "";

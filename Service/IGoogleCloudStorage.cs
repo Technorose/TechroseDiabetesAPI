@@ -2,6 +2,6 @@
 {
     public interface IGoogleCloudStorage
     {
-        string GenerateDownloadImageUrl(string folderName, string fileName);
+        string GenerateDownloadImageUrl(GenerateDownloadImageUrlArgs args);
     }
 }

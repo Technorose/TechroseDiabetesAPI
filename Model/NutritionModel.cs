@@ -68,6 +68,19 @@ namespace TechroseDemo
         public virtual ICollection<UserNutritionModel>? UserNutritionModels { get; set; }
     }
 
+    public class NutritionModelDto : NutritionBaseModel
+    {
+        public NutritionModelDto()
+        {
+            Id = long.MinValue;
+        }
+
+        [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        [Column("id")]
+        public long Id { get; set; }
+    }
+
     public class NutritionModelListArgs
     {
         public NutritionModelListArgs()
@@ -87,14 +100,14 @@ namespace TechroseDemo
     {
         public NutritionModelListResult()
         {
-            Nutritions = new List<NutritionModel>();
+            Nutritions = new List<NutritionModelDto>();
             Result = new ResultModel();
         }
 
         public ResultModel Result { get; set; }
 
         [JsonPropertyName("nutritions")]
-        public List<NutritionModel> Nutritions { get; set; }
+        public List<NutritionModelDto> Nutritions { get; set; }
 
     }
 
