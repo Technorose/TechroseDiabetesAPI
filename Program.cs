@@ -88,6 +88,7 @@ try
     builder.Services.AddSingleton<ILoggerService, LoggerService>();
 
     builder.Services.AddTransient<IRepo, BaseRepo>();
+    builder.Services.AddTransient<IGoogleCloudStorage, GoogleCloudStorage>();
 
     builder.Host.UseSerilog();
 
