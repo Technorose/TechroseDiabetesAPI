@@ -284,7 +284,7 @@ namespace TechroseDemo
         #endregion
 
         [HttpPost]
-        [AllowAnonymous]
+        [Authorize]
         [Route(nameof(UserUploadProfileImage))]
         public async Task<UserModelUploadProfileImageResult> UserUploadProfileImage([FromForm] UserModelUploadProfileImageArgs args, [FromHeader] HeaderModelArgs headerArgs)
         {
