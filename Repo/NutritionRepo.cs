@@ -180,5 +180,24 @@ namespace TechroseDemo
             return result;
         }
         #endregion
+
+        #region NutritionListByNutritionType
+        
+        public NutritionModelListByNutritionTypeResult NutritionListByNutritionType(NutritionModelListByNutritionTypeArgs args)
+        {
+            NutritionModelListByNutritionTypeResult result = new();
+
+            if(args.NutritionTypeId.Equals(null) || args.NutritionTypeId.Equals(int.MinValue))
+            {
+                result.Result.Success = false;
+                result.Result.ErrorCode = EnumErrorCodes.ERRORx0100.ToString();
+                result.Result.ErrorDescription = EnumErrorCodes.ERRORx0001.ToDescription();
+
+                return result;
+            }
+
+            return result;
+        }
+        #endregion
     }
 }

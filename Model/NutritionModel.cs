@@ -174,4 +174,40 @@ namespace TechroseDemo
 
         public ResultModel Result { get; set; }
     }
+
+    public class NutritionModelListByNutritionTypeArgs 
+    {
+        public NutritionModelListByNutritionTypeArgs()
+        {
+            NutritionTypeId = int.MinValue;
+            Skip = CoreStaticVars.DefaultOffsetValue;
+            Take = CoreStaticVars.DefaultLimitValue;
+        }
+
+        [FromQuery(Name = "nutrition_type_id")]
+        public int NutritionTypeId { get; set; }
+
+
+        [FromQuery(Name = "skip")]
+        public int Skip { get; set; }
+
+
+        [FromQuery(Name = "take")]
+        public int Take { get; set; }
+    }
+
+    public class NutritionModelListByNutritionTypeResult
+    {
+        public NutritionModelListByNutritionTypeResult()
+        {
+            Result = new ResultModel();
+            Nutritions = new List<NutritionModelDto>();
+        }
+
+        public ResultModel Result { get; set; }
+
+        [JsonPropertyName("nutritions")]
+        public List<NutritionModelDto> Nutritions { get; set; }
+        
+    }
 }
