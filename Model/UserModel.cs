@@ -300,4 +300,40 @@ namespace TechroseDemo
 
         public ResultModel Result { get; set; }
     }
+
+    public class UserModelTakeMealsValuesByDateArgs 
+    {
+        public UserModelTakeMealsValuesByDateArgs()
+        {
+            Date = DateTime.Now;
+        }
+
+        [FromQuery(Name = "date")] 
+        public DateTime Date { get; set; }
+    }
+
+    public class UserModelTakeMealsValuesByDateResult
+    {
+        public UserModelTakeMealsValuesByDateResult()
+        {
+            Result = new ResultModel();
+            TotalCalories = double.MinValue;
+            TotalCarbohydrate = double.MinValue;
+            TotalSugar = double.MinValue;
+            BloodSugar = double.MinValue; 
+        }
+        public ResultModel Result { get; set; }
+
+        [JsonPropertyName("total_calories")] 
+        public double TotalCalories { get; set; }
+        
+        [JsonPropertyName("total_carbohydrate")]
+        public double TotalCarbohydrate { get; set; }
+
+        [JsonPropertyName("total_sugar")]
+        public double TotalSugar { get; set; }
+
+        [JsonPropertyName("blood_sugar")]
+        public double BloodSugar { get; set; }
+    }
 }

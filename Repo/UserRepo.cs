@@ -438,7 +438,7 @@ namespace TechroseDemo
         {
             UserModelUploadProfileImageResult result = new();
 
-            if (headerArgs.Authorization.Equals(null) || headerArgs.Authorization.Trim().Equals(""))
+            if (headerArgs.Authorization.Equals(null) || headerArgs.Authorization.Trim().Equals(""))  
             {
                 result.Result.Success = false;
                 result.Result.ErrorCode = EnumErrorCodes.ERRORx0100.ToString();
@@ -515,6 +515,70 @@ namespace TechroseDemo
             DatabaseContext.Users.Update(user);
             await DatabaseContext.SaveChangesAsync();
 
+            result.Result.Success = true;
+            result.Result.ErrorCode = "";
+            result.Result.ErrorDescription = "";
+
+            return result;
+        }
+        #endregion
+
+
+        #region UserGetMealsValues
+        
+        public UserModelTakeMealsValuesByDateResult UserGetMealsValues(UserModelTakeMealsValuesByDateArgs args, HeaderModelArgs headerArgs)
+        {
+            UserModelTakeMealsValuesByDateResult result = new();
+
+            if(args.Date.Equals(null))
+            {
+                result.Result.Success = false;
+                result.Result.ErrorCode = EnumErrorCodes.ERRORx0100.ToString();
+                result.Result.ErrorDescription = EnumErrorCodes.ERRORx0100.ToDescription();
+
+                return result;
+            }
+
+            if(headerArgs.Authorization.Equals(null) || headerArgs.Authorization.Trim().Equals("")) 
+            {
+                result.Result.Success = false;
+                result.Result.ErrorCode = EnumErrorCodes.ERRORx0100.ToString();
+                result.Result.ErrorDescription = EnumErrorCodes.ERRORx0100.ToDescription();
+
+                return result;
+            }
+
+            TokenDecodeModelArgs tokenDecodeModelArgs = new();
+            tokenDecodeModelArgs.AuthorizationToken = headerArgs.Authorization;
+
+            TokenDecodeModelResult tokenDecodeModelResult = TokenUtility.DecodeToken(tokenDecodeModelArgs);
+
+            string? email = tokenDecodeModelResult.Claims.GetValueOrDefault(CoreStaticVars.ClaimTypeEmail);
+
+            UserModel? user = DatabaseContext.Users.SingleOrDefault(
+                u => u.Email == email
+            );
+
+            if (user == null)
+            {
+                result.Result.Success = false;
+                result.Result.ErrorCode = EnumErrorCodes.ERRORx0401.ToString();
+                result.Result.ErrorDescription = EnumErrorCodes.ERRORx0401.ToDescription();
+
+                return result;
+            }
+
+            List<UserModelTakeMealsValuesByDateResult> calculatedResult  = DatabaseContext.UserNutritions
+                .Where(u => u.UserId == user.Id && u.MealTime.ToString("MM/dd/yyyy") == args.Date.ToString("MM/dd/yyyy"))
+                .GroupBy(u => u.MealId)
+                .Select(group => new UserModelTakeMealsValuesByDateResult
+                {
+                    TotalCalories = group.Sum(row => row.MealModel.TotalCalorie),
+                    TotalCarbohydrate = group.Sum(row => row.MealModel.TotalCarbohydrate),
+                    TotalSugar = group.Sum(row => row.MealModel.TotalSugar)
+                })
+                .ToList();
+                
             result.Result.Success = true;
             result.Result.ErrorCode = "";
             result.Result.ErrorDescription = "";

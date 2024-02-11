@@ -307,5 +307,30 @@ namespace TechroseDemo
 
             return result;
         }
+
+        [HttpGet]
+        [AllowAnonymous]
+        [Route(nameof(UserGetMealsValues))]
+        public async Task<UserModelTakeMealsValuesByDateResult> UserGetMealsValues([FromQuery]UserModelTakeMealsValuesByDateArgs args,[FromHeader] HeaderModelArgs headerArgs)
+        {
+            UserModelTakeMealsValuesByDateResult result = new();
+
+            await Task.Run(async () =>
+            {
+                try
+                {
+                    result = repoInterface.UserGetMealsValues(args, headerArgs);
+                }
+                catch (Exception ex)
+                {
+                    result.Result.Success = false;
+                    result.Result.ErrorCode= EnumErrorCodes.ERRORx0001.ToString();  
+                    result.Result.ErrorDescription = EnumErrorCodes.ERRORx0001.ToDescription();
+                    result.Result.ErrorException= Common.ExceptionToString(ex);
+                }
+            });
+
+            return result;
+        }
     }
 }
