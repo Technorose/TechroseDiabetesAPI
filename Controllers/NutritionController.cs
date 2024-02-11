@@ -117,7 +117,7 @@ namespace TechroseDemo
 
         [Route(nameof(NutritionListByNutritionType))]
         [HttpGet] 
-        [AllowAnonymous]
+        [Authorize]
         public async Task<NutritionModelListByNutritionTypeResult> NutritionListByNutritionType([FromQuery] NutritionModelListByNutritionTypeArgs args)
         {
             NutritionModelListByNutritionTypeResult result = new();

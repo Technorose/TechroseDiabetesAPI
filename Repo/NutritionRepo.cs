@@ -196,6 +196,41 @@ namespace TechroseDemo
                 return result;
             }
 
+            List<NutritionModelDto> nutritions = DatabaseContext.Nutritions
+                .Where(n => n.NutritionTypeId == args.NutritionTypeId)
+                .Select(n => new NutritionModelDto
+                {
+                    Id = n.Id,
+                    Calorie = n.Calorie,
+                    Carbohydrate = n.Carbohydrate,
+                    Name = n.Name,
+                    ServingSize = n.ServingSize,
+                    Sugar = n.Sugar,
+                    NutritionType = n.NutritionTypeModels,
+                    Image = googleCloudStorage.GenerateDownloadImageUrl(new GenerateDownloadImageUrlArgs()
+                    {
+                        FileName = n.Image
+                    }),
+                })
+                .OrderBy(n => n.Id)
+                .Skip(args.Skip)
+                .Take(args.Take)
+                .ToList();
+
+            if(nutritions.Count == 0)
+            {
+                result.Result.Success = false;
+                result.Result.ErrorCode= EnumErrorCodes.ERRORx0600.ToString();
+                result.Result.ErrorDescription = EnumErrorCodes.ERRORx0600.ToDescription();
+
+                return result;
+            }
+            
+            result.Result.Success = true;
+            result.Result.ErrorCode = "";
+            result.Result.ErrorDescription = "";
+            result.Nutritions = nutritions; 
+
             return result;
         }
         #endregion
