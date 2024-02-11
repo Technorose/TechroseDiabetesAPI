@@ -21,6 +21,8 @@
         NutritionModelSearchResult NutritionSearch(NutritionModelSearchArgs args);
 
         NutritionModelDetailsResult NutritionDetails(NutritionModelDetailsArgs args);
+
+        NutritionModelListByNutritionTypeResult NutritionListByNutritionType(NutritionModelListByNutritionTypeArgs args);
         #endregion
 
         #region UserNutritionRepo
