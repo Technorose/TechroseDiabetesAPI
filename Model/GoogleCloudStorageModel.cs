@@ -13,4 +13,16 @@
 
         public string FileName { get; set; }
     }
+
+    public class UploadImageArgs
+    {
+        public UploadImageArgs()
+        {
+            ImageName = "";
+        }
+
+        public string ImageName { get; set; }
+
+        public IFormFile? FormFile { get; set; }
+    }
 }

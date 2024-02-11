@@ -12,7 +12,10 @@
         UserModelListResult UserList(UserModelListArgs args);
 
         UserModelUpdatePasswordResult UserUpdatePassword(UserModelUpdatePasswordArgs args, HeaderModelArgs headers);
+
         UserModelDetailsResult UserDetails(UserModelDetailsArgs args);
+
+        Task<UserModelUploadProfileImageResult> UserUploadProfileImage(UserModelUploadProfileImageArgs args, HeaderModelArgs headerArgs);
         #endregion
 
         #region NutritionRepo

@@ -3,6 +3,8 @@ using static TechroseDemo.Enums;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Mvc;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
+using System.Linq;
+using Microsoft.EntityFrameworkCore;
 
 namespace TechroseDemo
 {
@@ -430,6 +432,95 @@ namespace TechroseDemo
             return result;
         }
         #endregion
-    }
 
+        #region UserUploadProfileImage
+        public async Task<UserModelUploadProfileImageResult> UserUploadProfileImage(UserModelUploadProfileImageArgs args, HeaderModelArgs headerArgs)
+        {
+            UserModelUploadProfileImageResult result = new();
+
+            if (headerArgs.Authorization.Equals(null) || headerArgs.Authorization.Trim().Equals(""))
+            {
+                result.Result.Success = false;
+                result.Result.ErrorCode = EnumErrorCodes.ERRORx0100.ToString();
+                result.Result.ErrorDescription = EnumErrorCodes.ERRORx0100.ToDescription();
+
+                return result;
+            }
+
+            if (args.Image == null || args.Image.Length.Equals(0))
+            {
+                result.Result.Success = false;
+                result.Result.ErrorCode = EnumErrorCodes.ERRORx0100.ToString();
+                result.Result.ErrorDescription = EnumErrorCodes.ERRORx0100.ToDescription();
+
+                return result;
+            }
+            
+            string[] postFix = args.Image.FileName.Split(".");
+
+            string extension = postFix[postFix.Length - 1];
+
+            bool ok = CoreStaticVars.ImageExtentions.Contains(extension.ToLower());
+
+            if (!ok)
+            {
+                result.Result.Success = false;
+                result.Result.ErrorCode = EnumErrorCodes.ERRORx0403.ToString();
+                result.Result.ErrorDescription = EnumErrorCodes.ERRORx0403.ToDescription();
+
+                return result;
+            }
+
+            TokenDecodeModelArgs tokenDecodeModelArgs = new TokenDecodeModelArgs();
+            tokenDecodeModelArgs.AuthorizationToken = headerArgs.Authorization;
+
+            TokenDecodeModelResult tokenDecodeModelResult = TokenUtility.DecodeToken(tokenDecodeModelArgs);
+
+            string? email = tokenDecodeModelResult.Claims.GetValueOrDefault(CoreStaticVars.ClaimTypeEmail);
+
+            UserModel? user = DatabaseContext.Users.SingleOrDefault(
+                u => u.Email == email
+            );
+
+            if(user == null)
+            {
+                result.Result.Success = false;
+                result.Result.ErrorCode = EnumErrorCodes.ERRORx0401.ToString();
+                result.Result.ErrorDescription = EnumErrorCodes.ERRORx0401.ToDescription();
+
+                return result;
+            }
+
+            string refExtension = String.Concat(".", extension);
+            string fileName = String.Concat(String.Concat(user.FirstName.ToLower(), "_"), user.LastName.ToLower());
+
+            string imageName = String.Concat(fileName, refExtension);
+            user.Image = String.Concat(CoreStaticVars.ProfileImageFolderName, imageName);
+
+            bool status = await googleCloudStorage.UploadImage(new UploadImageArgs()
+            {
+                ImageName = user.Image,
+                FormFile = args.Image
+            });
+
+            if(!status)
+            {
+                result.Result.Success = false;
+                result.Result.ErrorCode = EnumErrorCodes.ERRORx0405.ToString();
+                result.Result.ErrorDescription = EnumErrorCodes.ERRORx0405.ToDescription();
+
+                return result;
+            }
+
+            DatabaseContext.Users.Update(user);
+            await DatabaseContext.SaveChangesAsync();
+
+            result.Result.Success = true;
+            result.Result.ErrorCode = "";
+            result.Result.ErrorDescription = "";
+
+            return result;
+        }
+        #endregion
+    }
 }

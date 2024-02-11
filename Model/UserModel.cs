@@ -64,6 +64,7 @@ namespace TechroseDemo
         {
             HashedPassword = string.Empty;
             SaltedPassword = string.Empty;
+            Image = string.Empty;
         }
 
         [Key]
@@ -84,12 +85,21 @@ namespace TechroseDemo
         [Required]
         public double TotalDoseValue { get; set; }
 
+        [Column("image")]
+        [JsonPropertyName("image")]
+        public string Image { get; set; }
+
         [JsonIgnore]
         public virtual ICollection<UserNutritionModel>? UserNutritionModels { get; set; }
     }
-
+    
     public class UserModelDto : UserBaseModel
     {
+        public UserModelDto()
+        {
+            Image = string.Empty;
+        }
+
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [Column("id")]
@@ -99,6 +109,10 @@ namespace TechroseDemo
         [JsonPropertyName("total_dose_value")]
         [Required]
         public double TotalDoseValue { get; set; }
+
+        [Column("image")]
+        [JsonPropertyName("image")]
+        public string Image { get; set; }
     }
 
     public class UserModelDeleteArgs
@@ -264,5 +278,26 @@ namespace TechroseDemo
         public ResultModel Result { get; set; }
         public UserModelDto? User { get; set; }
         
+    }
+
+    public class UserModelUploadProfileImageArgs
+    {
+        public UserModelUploadProfileImageArgs()
+        {
+            Image = null;
+        }
+
+        [JsonPropertyName("image")]
+        public IFormFile? Image { get; set; }
+    }
+
+    public class UserModelUploadProfileImageResult
+    {
+        public UserModelUploadProfileImageResult()
+        {
+            Result = new ResultModel();
+        }
+
+        public ResultModel Result { get; set; }
     }
 }

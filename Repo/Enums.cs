@@ -26,6 +26,12 @@ namespace TechroseDemo
 
             [Description("Error Occurred While Getting User Details By ID")]
             ERRORx0402,
+
+            [Description("Profile Image Extensions Error! (Must be png or jpg)")]
+            ERRORx0403,
+
+            [Description("Profile Image Uploading Error!")]
+            ERRORx0405,
             #endregion
 
             #region NutritionsOperationsErrorEnums

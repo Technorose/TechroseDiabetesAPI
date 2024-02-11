@@ -14,5 +14,9 @@
         public readonly static string ClaimTypeEmail = "email";
 
         public readonly static string ClaimTypeFullName = "full_name";
+
+        public readonly static string[] ImageExtentions = { "png", "jpg" };
+
+        public readonly static string ProfileImageFolderName = "ProfileImage/";
     }
 }

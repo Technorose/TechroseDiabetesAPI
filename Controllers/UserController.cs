@@ -282,6 +282,30 @@ namespace TechroseDemo
             return result;
         }
         #endregion
-    }
 
+        [HttpPost]
+        [AllowAnonymous]
+        [Route(nameof(UserUploadProfileImage))]
+        public async Task<UserModelUploadProfileImageResult> UserUploadProfileImage([FromForm] UserModelUploadProfileImageArgs args, [FromHeader] HeaderModelArgs headerArgs)
+        {
+            UserModelUploadProfileImageResult result = new();
+
+            await Task.Run(async() =>
+            {
+                try
+                {
+                    result = await repoInterface.UserUploadProfileImage(args, headerArgs);
+                }
+                catch(Exception ex)
+                {
+                    result.Result.Success = false;
+                    result.Result.ErrorCode = EnumErrorCodes.ERRORx0001.ToString();
+                    result.Result.ErrorDescription = EnumErrorCodes.ERRORx0001.ToDescription();
+                    result.Result.ErrorException = Common.ExceptionToString(ex);
+                }
+            });
+
+            return result;
+        }
+    }
 }
