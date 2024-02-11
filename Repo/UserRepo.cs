@@ -568,20 +568,37 @@ namespace TechroseDemo
                 return result;
             }
 
-            List<UserModelTakeMealsValuesByDateResult> calculatedResult  = DatabaseContext.UserNutritions
-                .Where(u => u.UserId == user.Id && u.MealTime.ToString("MM/dd/yyyy") == args.Date.ToString("MM/dd/yyyy"))
-                .GroupBy(u => u.MealId)
+           
+            UserModelTakeMealsValuesByDateResult? calculatedResult = DatabaseContext.Meals
+                .Where(m => m.UserId == user.Id && m.MealTime.Date == args.Date.Date)
+                .GroupBy(gm => gm.UserId)
                 .Select(group => new UserModelTakeMealsValuesByDateResult
                 {
-                    TotalCalories = group.Sum(row => row.MealModel.TotalCalorie),
-                    TotalCarbohydrate = group.Sum(row => row.MealModel.TotalCarbohydrate),
-                    TotalSugar = group.Sum(row => row.MealModel.TotalSugar)
+                    TotalCalories = group.Sum(row => row.TotalCalorie),
+                    TotalSugar = group.Sum(row => row.TotalSugar),
+                    TotalCarbohydrate = group.Sum(row => row.TotalCarbohydrate),
+                    BloodSugar = group.Sum(row => row.BloodSugar)
                 })
-                .ToList();
+                .FirstOrDefault();
+
+            if(calculatedResult == null)
+            {
+                result.Result.Success = false;
+                result.Result.ErrorCode = EnumErrorCodes.ERRORx0703.ToString();
+                result.Result.ErrorDescription = EnumErrorCodes.ERRORx0703.ToDescription();
+
+                return result;
+            }
                 
             result.Result.Success = true;
             result.Result.ErrorCode = "";
             result.Result.ErrorDescription = "";
+
+            #pragma warning disable CS8602 // Dereference of a possibly null reference.
+            result.TotalSugar = calculatedResult.TotalSugar;
+            result.TotalCalories = calculatedResult.TotalCalories;
+            result.TotalCarbohydrate = calculatedResult.TotalCarbohydrate;
+            result.BloodSugar = calculatedResult.BloodSugar;
 
             return result;
         }

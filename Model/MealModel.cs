@@ -34,7 +34,15 @@ namespace TechroseDemo
         public required int MealNameCode { get; set; }
 
         [JsonIgnore]
-        public virtual MealNamesCodesModel? MealNamesCodes { get; set; } 
+        public virtual MealNamesCodesModel? MealNamesCodes { get; set; }
+
+        [Column("user_id")]
+        [JsonPropertyName("user_id")]
+        [ForeignKey(nameof(UserModel))]
+        public required int UserId { get; set; }
+
+        [JsonIgnore]
+        public virtual UserModel? UserModel { get; set; }
 
         [Column("total_calorie")]
         [JsonPropertyName("total_calorie")]
@@ -71,6 +79,7 @@ namespace TechroseDemo
         {
             BloodSugar = int.MinValue;
             MealNameCode = int.MinValue;
+            UserId = int.MinValue;
         }
 
         [JsonPropertyName("blood_sugar")]
@@ -78,6 +87,9 @@ namespace TechroseDemo
 
         [JsonPropertyName("meal_name_code")]
         public int MealNameCode { get; set; }
+
+        [JsonPropertyName("user_id")]
+        public int UserId { get; set; }
     }
 
     public class MealModelCreateResult

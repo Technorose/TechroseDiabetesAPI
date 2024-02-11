@@ -91,6 +91,9 @@ namespace TechroseDemo
 
         [JsonIgnore]
         public virtual ICollection<UserNutritionModel>? UserNutritionModels { get; set; }
+
+        [JsonIgnore]
+        public virtual ICollection<MealModel>? MealModels { get; set; }
     }
     
     public class UserModelDto : UserBaseModel

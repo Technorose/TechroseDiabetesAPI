@@ -47,6 +47,7 @@ namespace TechroseDemo
                 TotalCarbohydrate = 0.0,
                 TotalSugar = 0.0,
                 MealNameCode = args.MealNameCode,
+                UserId = args.UserId,
             };
 
             DatabaseContext.Meals.Add(meal);

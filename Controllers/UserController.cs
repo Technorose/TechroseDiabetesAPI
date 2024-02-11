@@ -309,13 +309,13 @@ namespace TechroseDemo
         }
 
         [HttpGet]
-        [AllowAnonymous]
+        [Authorize]
         [Route(nameof(UserGetMealsValues))]
         public async Task<UserModelTakeMealsValuesByDateResult> UserGetMealsValues([FromQuery]UserModelTakeMealsValuesByDateArgs args,[FromHeader] HeaderModelArgs headerArgs)
         {
             UserModelTakeMealsValuesByDateResult result = new();
 
-            await Task.Run(async () =>
+            await Task.Run(() =>
             {
                 try
                 {
