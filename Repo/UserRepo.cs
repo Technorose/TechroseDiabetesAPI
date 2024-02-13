@@ -122,11 +122,11 @@ namespace TechroseDemo
                 return result;
             }
 
-            if (args.Email.Equals(null) || args.Email.Trim().Equals(""))
+            if(!Validate.ValidateEmail(args.Email))
             {
                 result.Result.Success = false;
-                result.Result.ErrorCode = EnumErrorCodes.ERRORx0100.ToString();
-                result.Result.ErrorDescription = EnumErrorCodes.ERRORx0100.ToDescription();
+                result.Result.ErrorCode = EnumErrorCodes.ERRORx0406.ToString();
+                result.Result.ErrorDescription = EnumErrorCodes.ERRORx0406.ToDescription();
 
                 return result;
             }
@@ -492,7 +492,7 @@ namespace TechroseDemo
             }
 
             string refExtension = String.Concat(".", extension);
-            string fileName = String.Concat(String.Concat(user.FirstName.ToLower(), "_"), user.LastName.ToLower());
+            string fileName = String.Concat(String.Concat(user.FirstName.Trim().ToLower(), "_"), user.LastName.ToLower());
 
             string imageName = String.Concat(fileName, refExtension);
             user.Image = String.Concat(CoreStaticVars.ProfileImageFolderName, imageName);

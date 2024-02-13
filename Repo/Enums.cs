@@ -32,6 +32,9 @@ namespace TechroseDemo
 
             [Description("Profile Image Uploading Error!")]
             ERRORx0405,
+
+            [Description("The email is not valid!")]
+            ERRORx0406,
             #endregion
 
             #region NutritionsOperationsErrorEnums
