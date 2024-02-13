@@ -16,7 +16,7 @@ namespace TechroseDemo
             Name = string.Empty;
             ServingSize = long.MinValue;
             Calorie = long.MinValue;
-            Sugar = long.MinValue;
+            Sugar = double.MinValue;
             Carbohydrate = long.MinValue;
             Image = string.Empty;
         }
@@ -35,7 +35,7 @@ namespace TechroseDemo
 
         [Column("sugar")]
         [JsonPropertyName("sugar")]
-        public required long Sugar { get; set;}
+        public required double Sugar { get; set;}
 
         [Column("carbo_hydrate")]
         [JsonPropertyName("carbo_hydrate")]

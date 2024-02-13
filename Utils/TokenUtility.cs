@@ -35,7 +35,7 @@ namespace TechroseDemo
 
             JwtSecurityTokenHandler handler = new JwtSecurityTokenHandler();
 
-            JwtSecurityToken token = handler.ReadJwtToken(args.AuthorizationToken);
+            JwtSecurityToken token = handler.ReadJwtToken(args.AuthorizationToken.Split(" ")[1]);
 
             result.Claims = token.Claims.Select(claim => (claim.Type, claim.Value)).ToDictionary();
             result.Issuer = token.Issuer;
