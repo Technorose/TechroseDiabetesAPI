@@ -84,5 +84,14 @@ namespace TechroseDemo
 
         public required NutritionModel Nutrition;
     }
+
+    public class UserNutritionsMealUpdateResult
+    {
+        public required double TotalCalorie;
+
+        public required double TotalCarbohydrate;
+
+        public required double TotalSugar;
+    }
     #endregion
 }

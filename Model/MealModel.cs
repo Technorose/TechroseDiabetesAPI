@@ -96,8 +96,11 @@ namespace TechroseDemo
     {
         public MealModelCreateResult()
         {
+            Id = int.MinValue;
             Result = new ResultModel();
         }
+
+        public int Id { get; set; }
 
         public ResultModel Result { get; set; }
     }

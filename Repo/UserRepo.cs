@@ -20,7 +20,7 @@ namespace TechroseDemo
             {
                 result.Result.Success = false;
                 result.Result.ErrorCode = EnumErrorCodes.ERRORx0100.ToString();
-                result.Result.ErrorDescription = EnumErrorCodes.ERRORx0100.ToString();
+                result.Result.ErrorDescription = EnumErrorCodes.ERRORx0100.ToDescription();
 
                 return result;
             }
@@ -29,7 +29,7 @@ namespace TechroseDemo
             {
                 result.Result.Success = false;
                 result.Result.ErrorCode = EnumErrorCodes.ERRORx0100.ToString();
-                result.Result.ErrorDescription = EnumErrorCodes.ERRORx0100.ToString();
+                result.Result.ErrorDescription = EnumErrorCodes.ERRORx0100.ToDescription();
 
                 return result;
             }
