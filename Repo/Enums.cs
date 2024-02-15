@@ -35,6 +35,7 @@ namespace TechroseDemo
 
             [Description("The email is not valid!")]
             ERRORx0406,
+
             #endregion
 
             #region NutritionsOperationsErrorEnums

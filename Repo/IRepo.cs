@@ -1,4 +1,6 @@
-﻿namespace TechroseDemo
+﻿using Microsoft.AspNetCore.Mvc;
+
+namespace TechroseDemo
 {
     public interface IRepo
     {
@@ -18,6 +20,8 @@
         Task<UserModelUploadProfileImageResult> UserUploadProfileImage(UserModelUploadProfileImageArgs args, HeaderModelArgs headerArgs);
 
         UserModelTakeMealsValuesByDateResult UserGetMealsValues(UserModelTakeMealsValuesByDateArgs args, HeaderModelArgs headerArgs);
+
+        UserModelUpdateResult UserUpdate(UserModelUpdateArgs args , HeaderModelArgs headerArgs);
         #endregion
 
         #region NutritionRepo

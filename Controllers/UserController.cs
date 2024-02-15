@@ -332,5 +332,33 @@ namespace TechroseDemo
 
             return result;
         }
+
+
+        #region UserUpdates
+        [HttpPost]
+        [AllowAnonymous]
+        [Route(nameof(UserUpdate))]
+        public async Task<UserModelUpdateResult> UserUpdate([FromBody] UserModelUpdateArgs args, [FromHeader] HeaderModelArgs headerArgs)
+        {
+            UserModelUpdateResult result = new();
+
+            await Task.Run(() =>
+            {
+                try
+                {
+                    result = repoInterface.UserUpdate(args, headerArgs);
+                }
+                catch (Exception ex)
+                {
+                    result.Result.Success = false;
+                    result.Result.ErrorCode = EnumErrorCodes.ERRORx0001.ToString();
+                    result.Result.ErrorDescription = EnumErrorCodes.ERRORx0001.ToDescription();
+                    result.Result.ErrorException = Common.ExceptionToString(ex);
+                }
+            });
+
+            return result;
+        }
+        #endregion
     }
 }

@@ -116,6 +116,11 @@ namespace TechroseDemo
         [Column("image")]
         [JsonPropertyName("image")]
         public string Image { get; set; }
+
+        public static implicit operator UserModelDto(UserModel v)
+        {
+            throw new NotImplementedException();
+        }
     }
 
     public class UserModelDeleteArgs
@@ -338,5 +343,21 @@ namespace TechroseDemo
 
         [JsonPropertyName("blood_sugar")]
         public double BloodSugar { get; set; }
+    }
+
+    public class UserModelUpdateArgs : UserBaseModel
+    {
+    }
+
+    public class UserModelUpdateResult
+    {
+        public UserModelUpdateResult()
+        {
+            Result = new ResultModel();
+            User = new UserModelDto();
+        }
+        public ResultModel Result { get; set; }
+        public UserModelDto User { get; set; } 
+        
     }
 }

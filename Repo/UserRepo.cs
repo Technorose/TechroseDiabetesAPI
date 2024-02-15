@@ -5,6 +5,8 @@ using Microsoft.AspNetCore.Mvc;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
+using System.IdentityModel.Tokens.Jwt;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 namespace TechroseDemo
 {
@@ -599,6 +601,124 @@ namespace TechroseDemo
             result.TotalCalories = calculatedResult.TotalCalories;
             result.TotalCarbohydrate = calculatedResult.TotalCarbohydrate;
             result.BloodSugar = calculatedResult.BloodSugar;
+
+            return result;
+        }
+        #endregion
+
+        #region UserUpdates
+        public UserModelUpdateResult UserUpdate(UserModelUpdateArgs args, HeaderModelArgs headerArgs)
+        {
+            UserModelUpdateResult result = new();
+
+            if(args.FirstName.Equals(null) || args.FirstName.Equals(string.Empty))
+            {
+                result.Result.Success = false;
+                result.Result.ErrorCode = EnumErrorCodes.ERRORx0100.ToString();
+                result.Result.ErrorDescription = EnumErrorCodes.ERRORx0100.ToDescription();
+
+                return result;
+            }
+
+            if (args.LastName.Equals(null) || args.LastName.Equals(string.Empty))
+            {
+                result.Result.Success = false;
+                result.Result.ErrorCode = EnumErrorCodes.ERRORx0100.ToString();
+                result.Result.ErrorDescription = EnumErrorCodes.ERRORx0100.ToDescription();
+
+                return result;
+            }
+
+            if (args.Email.Equals(null) || args.Email.Equals(string.Empty))
+            {
+                result.Result.Success = false;
+                result.Result.ErrorCode = EnumErrorCodes.ERRORx0100.ToString();
+                result.Result.ErrorDescription = EnumErrorCodes.ERRORx0100.ToDescription();
+
+                return result;
+            }
+
+            if (args.PhoneNumber.Equals(null) || args.PhoneNumber.Equals(string.Empty))
+            {
+                result.Result.Success = false;
+                result.Result.ErrorCode = EnumErrorCodes.ERRORx0100.ToString();
+                result.Result.ErrorDescription = EnumErrorCodes.ERRORx0100.ToDescription();
+
+                return result;
+            }
+
+            if (args.Weight.Equals(null) || args.Weight.Equals(double.MinValue))
+            {
+                result.Result.Success = false;
+                result.Result.ErrorCode = EnumErrorCodes.ERRORx0100.ToString();
+                result.Result.ErrorDescription = EnumErrorCodes.ERRORx0100.ToDescription();
+
+                return result;
+            }
+
+            if (args.BloodSugarValue.Equals(null) || args.BloodSugarValue.Equals(double.MinValue))
+            {
+                result.Result.Success = false;
+                result.Result.ErrorCode = EnumErrorCodes.ERRORx0100.ToString();
+                result.Result.ErrorDescription = EnumErrorCodes.ERRORx0100.ToDescription();
+
+                return result;
+            }
+
+            if (args.BirthDate.Equals(null) || args.BirthDate.Equals(default(DateTime)))
+            {
+                result.Result.Success = false;
+                result.Result.ErrorCode = EnumErrorCodes.ERRORx0100.ToString();
+                result.Result.ErrorDescription = EnumErrorCodes.ERRORx0100.ToDescription();
+
+                return result;
+            }
+
+            if (headerArgs.Authorization.Equals(null) || headerArgs.Authorization.Trim().Equals(""))
+            {
+                result.Result.Success = false;
+                result.Result.ErrorCode = EnumErrorCodes.ERRORx0100.ToString();
+                result.Result.ErrorDescription = EnumErrorCodes.ERRORx0100.ToDescription();
+
+                return result;
+            }
+           
+            TokenDecodeModelArgs tokenDecodeModelArgs = new();
+            tokenDecodeModelArgs.AuthorizationToken = headerArgs.Authorization;
+
+            TokenDecodeModelResult tokenDecodeModelResult = TokenUtility.DecodeToken(tokenDecodeModelArgs);
+
+            string? email = tokenDecodeModelResult.Claims.GetValueOrDefault(CoreStaticVars.ClaimTypeEmail);  
+
+            UserModel? user = DatabaseContext.Users.SingleOrDefault(
+                u => u.Email == email
+            );
+
+            if (user == null)
+            {
+                result.Result.Success = false;
+                result.Result.ErrorCode = EnumErrorCodes.ERRORx0401.ToString();
+                result.Result.ErrorDescription = EnumErrorCodes.ERRORx0401.ToDescription();
+
+                return result;
+            }
+
+            user.FirstName = args.FirstName;
+            user.LastName = args.LastName;
+            user.Email = args.Email;
+            user.PhoneNumber = args.PhoneNumber;
+            user.BirthDate = args.BirthDate;
+            user.Weight = args.Weight;
+            user.BloodSugarValue = args.BloodSugarValue;
+
+            DatabaseContext.Users.Update(user);
+            DatabaseContext.SaveChanges();
+
+            result.User = Mapper.Map<UserModelDto>(user);    
+
+            result.Result.Success = true;
+            result.Result.ErrorCode = "";
+            result.Result.ErrorDescription = "";
 
             return result;
         }
