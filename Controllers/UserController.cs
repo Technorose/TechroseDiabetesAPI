@@ -336,7 +336,7 @@ namespace TechroseDemo
 
         #region UserUpdates
         [HttpPost]
-        [AllowAnonymous]
+        [Authorize]
         [Route(nameof(UserUpdate))]
         public async Task<UserModelUpdateResult> UserUpdate([FromBody] UserModelUpdateArgs args, [FromHeader] HeaderModelArgs headerArgs)
         {
