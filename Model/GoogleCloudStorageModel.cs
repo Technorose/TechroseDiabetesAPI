@@ -19,10 +19,23 @@
         public UploadImageArgs()
         {
             ImageName = "";
+            ImageExists = false;
         }
+
+        public bool ImageExists { get; set; }
 
         public string ImageName { get; set; }
 
         public IFormFile? FormFile { get; set; }
+    }
+
+    public class ImageExistsArgs
+    { 
+        public ImageExistsArgs()
+        {
+            ImageName = string.Empty;
+        }
+
+        public string ImageName { get; set; }
     }
 }

@@ -27,9 +27,14 @@ namespace TechroseDemo
         public async Task<bool> UploadImage(UploadImageArgs args)
         {
             #pragma warning disable CS8602 // Possible null reference assignment.
+            if (args.ImageExists)
+            {
+                await _storageClient.DeleteObjectAsync(_bucketName, args.ImageName);
+            }
+
             Stream streamedFile = args.FormFile.OpenReadStream();
 
-            var result = await _storageClient.UploadObjectAsync(_bucketName, args.ImageName, null, streamedFile);
+            Google.Apis.Storage.v1.Data.Object result = await _storageClient.UploadObjectAsync(_bucketName, args.ImageName, null, streamedFile);
 
             return !result.Id.Equals("");
         }

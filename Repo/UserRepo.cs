@@ -495,12 +495,13 @@ namespace TechroseDemo
             string fileName = String.Concat(String.Concat(user.FirstName.Trim().ToLower(), "_"), user.LastName.ToLower());
 
             string imageName = String.Concat(fileName, refExtension);
-            user.Image = String.Concat(CoreStaticVars.ProfileImageFolderName, imageName);
+            string userImage = String.Concat(CoreStaticVars.ProfileImageFolderName, imageName);
 
             bool status = await googleCloudStorage.UploadImage(new UploadImageArgs()
             {
-                ImageName = user.Image,
-                FormFile = args.Image
+                ImageName = userImage,
+                FormFile = args.Image,
+                ImageExists = (user.Image == null || user.Image == "") ? false : true
             });
 
             if(!status)
@@ -511,6 +512,8 @@ namespace TechroseDemo
 
                 return result;
             }
+
+            user.Image = userImage;
 
             DatabaseContext.Users.Update(user);
             await DatabaseContext.SaveChangesAsync();
