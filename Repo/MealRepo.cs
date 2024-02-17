@@ -53,6 +53,7 @@ namespace TechroseDemo
             DatabaseContext.Meals.Add(meal);
             DatabaseContext.SaveChanges();
 
+            result.Id = meal.Id;
             result.Result.Success = true;
             result.Result.ErrorCode = "";
             result.Result.ErrorDescription = "";
@@ -97,19 +98,26 @@ namespace TechroseDemo
                 return result;
             }
 
-            List<UserNutritionsMealUpdateArgs> usrnResult = DatabaseContext.UserNutritions
+            UserNutritionsMealUpdateResult? usrnResult = DatabaseContext.UserNutritions
                 .Where(usrn => usrn.MealId == model.Id)
                 .Join(DatabaseContext.Nutritions,
                       usrn => usrn.NutritionId,
                       nutr => nutr.Id,
                       (usrn, nutr) => new UserNutritionsMealUpdateArgs { UserNutrition = usrn, Nutrition = nutr })
-                .ToList(); 
+                .GroupBy(group => group.UserNutrition.MealId)
+                .Select(group => new UserNutritionsMealUpdateResult
+                {
+                    TotalCalorie = group.Sum(entry => Convert.ToDouble(entry.Nutrition.Calorie) * entry.UserNutrition.Portion),
+                    TotalCarbohydrate = group.Sum(entry => Convert.ToDouble(entry.Nutrition.Carbohydrate) * entry.UserNutrition.Portion),
+                    TotalSugar = group.Sum(entry => Convert.ToDouble(entry.Nutrition.Sugar) * entry.UserNutrition.Portion)
+                })
+                .FirstOrDefault();
 
-            model.TotalCalorie += usrnResult.Sum(entry => Convert.ToDouble(entry.Nutrition.Calorie) * entry.UserNutrition.Portion);
+            model.TotalCalorie += usrnResult == null ? 0 : usrnResult.TotalCalorie;
 
-            model.TotalCarbohydrate += usrnResult.Sum(entry => Convert.ToDouble(entry.Nutrition.Carbohydrate) * entry.UserNutrition.Portion);
+            model.TotalCarbohydrate += usrnResult == null ? 0 : usrnResult.TotalCarbohydrate;
 
-            model.TotalSugar += usrnResult.Sum(entry => Convert.ToDouble(entry.Nutrition.Sugar) * entry.UserNutrition.Portion);
+            model.TotalSugar += usrnResult == null ? 0 : usrnResult.TotalSugar;
 
 
             DatabaseContext.Meals.Update(model);
