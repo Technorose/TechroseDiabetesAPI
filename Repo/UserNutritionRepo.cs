@@ -22,15 +22,14 @@ namespace TechroseDemo
 
             await DatabaseContext.UserNutritions.AddRangeAsync(userNutritionsToAdd);
 
+            await DatabaseContext.SaveChangesAsync();
+
             await MealUpdate(new MealModelUpdateArgs()
             {
                 Id = args[0].MealId,
                 UserNutritionsIds = userNutritionsToAdd.Select(item => item.Id).ToList()
             });
             
-            await DatabaseContext.SaveChangesAsync();
-
-
             result.Result.Success = true;
             result.Result.ErrorCode = "";
             result.Result.ErrorDescription = "";
