@@ -42,11 +42,11 @@ namespace TechroseDemo
         {
             MealModelUpdateResult result = new();
 
-            await Task.Run(() =>
+            await Task.Run(async () =>
             {
                 try
                 {
-                    result = repoInterface.MealUpdate(args);
+                    result = await repoInterface.MealUpdate(args);
                 }
                 catch(Exception ex)
                 {
