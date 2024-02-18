@@ -41,7 +41,7 @@ namespace TechroseDemo
         #region MealRepo
         MealModelCreateResult MealCreate(MealModelCreateArgs args);
 
-        MealModelUpdateResult MealUpdate(MealModelUpdateArgs args);
+        Task<MealModelUpdateResult> MealUpdate(MealModelUpdateArgs args);
 
         MealModelDetailsResult MealDetails(MealModelDetailsArgs args);
 

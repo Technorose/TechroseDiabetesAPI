@@ -63,7 +63,7 @@ namespace TechroseDemo
         #endregion
 
         #region MealUpdate
-        public MealModelUpdateResult MealUpdate(MealModelUpdateArgs args)
+        public async Task<MealModelUpdateResult> MealUpdate(MealModelUpdateArgs args)
         {
             MealModelUpdateResult result = new();
 
@@ -85,7 +85,7 @@ namespace TechroseDemo
                 return result;
             }
 
-            MealModel? model = DatabaseContext.Meals.SingleOrDefault(
+            MealModel? model = await DatabaseContext.Meals.SingleOrDefaultAsync(
                 m => m.Id == args.Id
             );
 
@@ -121,7 +121,7 @@ namespace TechroseDemo
 
 
             DatabaseContext.Meals.Update(model);
-            DatabaseContext.SaveChanges();
+            await DatabaseContext.SaveChangesAsync();
 
             result.Result.Success = true;
             result.Result.ErrorCode = "";

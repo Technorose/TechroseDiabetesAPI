@@ -22,7 +22,7 @@ namespace TechroseDemo
 
             await DatabaseContext.UserNutritions.AddRangeAsync(userNutritionsToAdd);
 
-            MealUpdate(new MealModelUpdateArgs()
+            await MealUpdate(new MealModelUpdateArgs()
             {
                 Id = args[0].MealId,
                 UserNutritionsIds = userNutritionsToAdd.Select(item => item.Id).ToList()
