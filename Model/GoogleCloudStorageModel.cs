@@ -19,10 +19,10 @@
         public UploadImageArgs()
         {
             ImageName = "";
-            ImageExists = false;
+            ImageExists = string.Empty;
         }
 
-        public bool ImageExists { get; set; }
+        public string ImageExists { get; set; }
 
         public string ImageName { get; set; }
 

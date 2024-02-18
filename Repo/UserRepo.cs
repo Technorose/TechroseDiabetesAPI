@@ -503,7 +503,7 @@ namespace TechroseDemo
             {
                 ImageName = userImage,
                 FormFile = args.Image,
-                ImageExists = (user.Image == null || user.Image == "") ? false : true
+                ImageExists = (user.Image == null || user.Image == "") ? "" : user.Image
             });
 
             if(!status)

@@ -27,9 +27,9 @@ namespace TechroseDemo
         public async Task<bool> UploadImage(UploadImageArgs args)
         {
             #pragma warning disable CS8602 // Possible null reference assignment.
-            if (args.ImageExists)
+            if (!args.ImageExists.Equals(""))
             {
-                await _storageClient.DeleteObjectAsync(_bucketName, args.ImageName);
+                await _storageClient.DeleteObjectAsync(_bucketName, args.ImageExists);
             }
 
             Stream streamedFile = args.FormFile.OpenReadStream();
