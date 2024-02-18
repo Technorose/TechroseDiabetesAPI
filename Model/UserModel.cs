@@ -295,7 +295,7 @@ namespace TechroseDemo
             Image = null;
         }
 
-        [JsonPropertyName("image")]
+        [FromForm(Name = "file")]
         public IFormFile? Image { get; set; }
     }
 
