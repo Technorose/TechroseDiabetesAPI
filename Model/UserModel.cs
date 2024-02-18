@@ -303,8 +303,12 @@ namespace TechroseDemo
     {
         public UserModelUploadProfileImageResult()
         {
+            Image = string.Empty;
             Result = new ResultModel();
         }
+
+        [JsonPropertyName("image")]
+        public string Image { get; set; }
 
         public ResultModel Result { get; set; }
     }

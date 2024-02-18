@@ -520,6 +520,7 @@ namespace TechroseDemo
             DatabaseContext.Users.Update(user);
             await DatabaseContext.SaveChangesAsync();
 
+            result.Image = user.Image;
             result.Result.Success = true;
             result.Result.ErrorCode = "";
             result.Result.ErrorDescription = "";
