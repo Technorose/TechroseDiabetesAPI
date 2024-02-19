@@ -12,8 +12,8 @@ using TechroseDemo;
 namespace TechroseDemo.Migrations
 {
     [DbContext(typeof(ApiDbContext))]
-    [Migration("20240210193218_NutritionTypeMigration")]
-    partial class NutritionTypeMigration
+    [Migration("20240219172420_InitMigration")]
+    partial class InitMigration
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -64,9 +64,16 @@ namespace TechroseDemo.Migrations
                         .HasColumnName("total_sugar")
                         .HasAnnotation("Relational:JsonPropertyName", "total_sugar");
 
+                    b.Property<int>("UserId")
+                        .HasColumnType("int")
+                        .HasColumnName("user_id")
+                        .HasAnnotation("Relational:JsonPropertyName", "user_id");
+
                     b.HasKey("Id");
 
                     b.HasIndex("MealNameCode");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("meals");
                 });
@@ -110,12 +117,6 @@ namespace TechroseDemo.Migrations
                         .HasColumnName("carbo_hydrate")
                         .HasAnnotation("Relational:JsonPropertyName", "carbo_hydrate");
 
-                    b.Property<string>("Category")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)")
-                        .HasColumnName("category")
-                        .HasAnnotation("Relational:JsonPropertyName", "category");
-
                     b.Property<string>("Image")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)")
@@ -128,17 +129,24 @@ namespace TechroseDemo.Migrations
                         .HasColumnName("name")
                         .HasAnnotation("Relational:JsonPropertyName", "name");
 
+                    b.Property<int>("NutritionTypeId")
+                        .HasColumnType("int")
+                        .HasColumnName("nutrition_type_id")
+                        .HasAnnotation("Relational:JsonPropertyName", "nutrition_type_id");
+
                     b.Property<long>("ServingSize")
                         .HasColumnType("bigint")
                         .HasColumnName("serving_size")
                         .HasAnnotation("Relational:JsonPropertyName", "serving_size");
 
-                    b.Property<long>("Sugar")
-                        .HasColumnType("bigint")
+                    b.Property<double>("Sugar")
+                        .HasColumnType("float")
                         .HasColumnName("sugar")
                         .HasAnnotation("Relational:JsonPropertyName", "sugar");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("NutritionTypeId");
 
                     b.ToTable("nutritions");
                 });
@@ -151,6 +159,18 @@ namespace TechroseDemo.Migrations
                         .HasColumnName("id");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Image")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("image")
+                        .HasAnnotation("Relational:JsonPropertyName", "image");
+
+                    b.Property<string>("NutritionTypeName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("nutrition_type_name")
+                        .HasAnnotation("Relational:JsonPropertyName", "nutrition_type_name");
 
                     b.HasKey("Id");
 
@@ -192,6 +212,12 @@ namespace TechroseDemo.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)")
                         .HasColumnName("hashed_password");
+
+                    b.Property<string>("Image")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("image")
+                        .HasAnnotation("Relational:JsonPropertyName", "image");
 
                     b.Property<string>("LastName")
                         .IsRequired()
@@ -278,7 +304,26 @@ namespace TechroseDemo.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("TechroseDemo.UserModel", "UserModel")
+                        .WithMany("MealModels")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.Navigation("MealNamesCodes");
+
+                    b.Navigation("UserModel");
+                });
+
+            modelBuilder.Entity("TechroseDemo.NutritionModel", b =>
+                {
+                    b.HasOne("TechroseDemo.NutritionTypeModel", "NutritionTypeModels")
+                        .WithMany("NutritionModels")
+                        .HasForeignKey("NutritionTypeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("NutritionTypeModels");
                 });
 
             modelBuilder.Entity("TechroseDemo.UserNutritionModel", b =>
@@ -323,8 +368,15 @@ namespace TechroseDemo.Migrations
                     b.Navigation("UserNutritionModels");
                 });
 
+            modelBuilder.Entity("TechroseDemo.NutritionTypeModel", b =>
+                {
+                    b.Navigation("NutritionModels");
+                });
+
             modelBuilder.Entity("TechroseDemo.UserModel", b =>
                 {
+                    b.Navigation("MealModels");
+
                     b.Navigation("UserNutritionModels");
                 });
 #pragma warning restore 612, 618

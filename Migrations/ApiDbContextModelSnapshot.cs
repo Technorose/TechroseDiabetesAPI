@@ -136,8 +136,8 @@ namespace TechroseDemo.Migrations
                         .HasColumnName("serving_size")
                         .HasAnnotation("Relational:JsonPropertyName", "serving_size");
 
-                    b.Property<long>("Sugar")
-                        .HasColumnType("bigint")
+                    b.Property<double>("Sugar")
+                        .HasColumnType("float")
                         .HasColumnName("sugar")
                         .HasAnnotation("Relational:JsonPropertyName", "sugar");
 
