@@ -12,8 +12,8 @@ using TechroseDemo;
 namespace TechroseDemo.Migrations
 {
     [DbContext(typeof(ApiDbContext))]
-    [Migration("20240219172420_InitMigration")]
-    partial class InitMigration
+    [Migration("20240219183247_mig_add_DB")]
+    partial class mig_add_DB
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

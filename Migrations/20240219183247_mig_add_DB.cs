@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace TechroseDemo.Migrations
 {
     /// <inheritdoc />
-    public partial class InitMigration : Migration
+    public partial class mig_add_DB : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -142,12 +142,6 @@ namespace TechroseDemo.Migrations
                         name: "FK_user_nutritions_nutritions_nutrition_id",
                         column: x => x.nutrition_id,
                         principalTable: "nutritions",
-                        principalColumn: "id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_user_nutritions_users_user_id",
-                        column: x => x.user_id,
-                        principalTable: "users",
                         principalColumn: "id",
                         onDelete: ReferentialAction.Cascade);
                 });
