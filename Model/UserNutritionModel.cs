@@ -8,20 +8,11 @@ namespace TechroseDemo
     {
         public UserNutritionBaseModel()
         {
-            UserId = int.MinValue;
             NutritionId = long.MinValue;
             MealId = int.MinValue;
             Portion = double.MinValue;
             MealTime = DateTime.Now;
         }
-
-        [JsonPropertyName("user_id")]
-        [Column("user_id")]
-        [ForeignKey(nameof(UserModel))]
-        public required int UserId { get; set; }
-
-        [JsonIgnore]
-        public virtual UserModel? UserModel { get; set; }
 
         [JsonPropertyName("nutrition_id")]
         [Column("nutrition_id")]

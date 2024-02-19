@@ -90,9 +90,6 @@ namespace TechroseDemo
         public string Image { get; set; }
 
         [JsonIgnore]
-        public virtual ICollection<UserNutritionModel>? UserNutritionModels { get; set; }
-
-        [JsonIgnore]
         public virtual ICollection<MealModel>? MealModels { get; set; }
     }
     
