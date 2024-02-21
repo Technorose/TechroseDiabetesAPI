@@ -3,10 +3,14 @@
 [Demo]: https://www.youtube.com/watch?v=z5Ad3D7VYT4
 [Linkedin]: https://www.linkedin.com/company/techrose/
 
+<p align="center">
+
 [Demo] 
 [Linkedin]
 
-<h1 style="text-align:center; margin-top: 20px;">Techrose Diabetes API</h1>
+</p>
+
+<h1 style="margin-top: 20px;" align="center">Techrose Diabetes API</h1>
 <h2 style="border-bottom: none;">Content</h2>
 <ul>
     <a href="#about-project-content"><li>About project</li></a>
