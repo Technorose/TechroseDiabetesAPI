@@ -1,9 +1,11 @@
 <img src="./Images/techrose_banner.png" width="100%" height="100%" />
-<ul style="display:flex; justify-content: space-around; flex-direction: row; list-style-type:none; margin-top: 10px;">
-    <a style="border-bottom: 1px solid #457bbe;"><li>Demo videos</li></a>
-    <a style="border-bottom: 1px solid #457bbe;"><li>Linkedin</li></a>
-    <a style="border-bottom: 1px solid #457bbe;"><li>Instagram</li></a>
-</ul>
+
+[Demo]: https://www.youtube.com/watch?v=z5Ad3D7VYT4
+[Linkedin]: https://www.linkedin.com/company/techrose/
+
+[Demo] 
+[Linkedin]
+
 <h1 style="text-align:center; margin-top: 20px;">Techrose Diabetes API</h1>
 <h2 style="border-bottom: none;">Content</h2>
 <ul>
